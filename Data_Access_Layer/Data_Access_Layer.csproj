@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Configurations\" />
-    <Folder Include="Entities\" />
+    <Compile Remove="Data\Configurations\emp.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Data\Configurations\emp.cs" />
   </ItemGroup>
 
 </Project>
