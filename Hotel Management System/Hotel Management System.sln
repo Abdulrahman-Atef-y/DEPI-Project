@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36603.0 d17.14
+VisualStudioVersion = 17.14.36603.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel Management System", "Hotel Management System.csproj", "{98663568-5280-4820-8409-88CCA9F80832}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel Management System", "Hotel Management System.csproj", "{98663568-5280-4820-8409-88CCA9F80832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data_Access_Layer", "..\Data_Access_Layer\Data_Access_Layer.csproj", "{65C9A837-B777-41A9-99C4-E93BBFE543CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data_Access_Layer", "..\Data_Access_Layer\Data_Access_Layer.csproj", "{65C9A837-B777-41A9-99C4-E93BBFE543CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buisness_Logic_Layer", "..\Buisness_Logic_Layer\Buisness_Logic_Layer.csproj", "{E6E3557C-4F2A-4596-BB9D-B6CE121CE739}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Buisness_Logic_Layer", "..\Buisness_Logic_Layer\Buisness_Logic_Layer.csproj", "{E6E3557C-4F2A-4596-BB9D-B6CE121CE739}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
