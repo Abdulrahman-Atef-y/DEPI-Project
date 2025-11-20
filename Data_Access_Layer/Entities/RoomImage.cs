@@ -21,3 +21,7 @@ namespace Data_Access_Layer.Entities
         public RoomType RoomType { get; set; }
     }
 }
+// ok
+
+
+// maybe think to add hotelimage entity later

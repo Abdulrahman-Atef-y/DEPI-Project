@@ -22,3 +22,22 @@ namespace Data_Access_Layer.Entities
         public string? Comment { get; set; }
     }
 }
+
+
+
+// sugested entity for the scalibility
+
+/*
+ public int Id { get; set; }
+        public int BookingId { get; set; }
+        public int GuestId { get; set; }
+        public int HotelId { get; set; }
+
+        public int Rating { get; set; }
+        public string Comment { get; set; }
+        public DateTime Date { get; set; }
+
+        public Booking Booking { get; set; }
+        public Guest Guest { get; set; }
+        public Hotel Hotel { get; set; }
+ */

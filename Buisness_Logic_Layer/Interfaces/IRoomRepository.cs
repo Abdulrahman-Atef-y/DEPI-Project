@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Buisness_Logic_Layer.Interfaces
 {
-    internal class emp
+    internal interface IRoomRepository
     {
     }
 }

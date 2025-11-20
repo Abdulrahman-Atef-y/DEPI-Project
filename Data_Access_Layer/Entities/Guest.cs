@@ -39,3 +39,15 @@ namespace Data_Access_Layer.Entities
         public List<Booking> Bookings { get; set; }
     }
 }
+
+
+
+
+
+/*
+ rethink about the role field later
+
+add  public ICollection<Review> Reviews { get; set; }
+add enum for gender
+ 
+ */

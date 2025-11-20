@@ -26,3 +26,11 @@ namespace Data_Access_Layer.Entities
         public List<Booking> Bookings { get; set; }
     }
 }
+
+
+
+/*
+ 
+adding enum to status
+
+ */
