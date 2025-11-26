@@ -15,32 +15,34 @@ namespace Data_Access_Layer.Entities
         public int Id { get; set; }
 
         [Required]
-        public int GuestId { get; set; }
+        public string GuestId { get; set; }
         public Guest Guest { get; set; }
 
         [Required]
-        public int RoomTypeId { get; set; }
-        public RoomType RoomType { get; set; }
+        public int RoomId { get; set; }
+        public Room Room { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Check-in Date")]
+        public DateTime CheckInDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Check-out Date")]
+        public DateTime CheckOutDate { get; set; }
 
         [Required]
-        public int RoomId { get; set; } 
-        public Room Room { get; set; }
-        public DateTime CheckInDate { get; set; }
-        public DateTime CheckOutDate { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        [Range(0, double.MaxValue, ErrorMessage = "Total Price cannot be negative.")]
+        [DataType(DataType.Currency)]
+        public decimal TotalPrice { get; set; }
 
         [MaxLength(20)]
         public string? Status { get; set; }
+
+        [DataType(DataType.DateTime)]
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public string? CancellationPolicy { get; set; }
+        public string? StripePaymentIntentId { get; set; }
         public List<Review> Reviews { get; set; }
     }
 }
-
-
-
-
-//remove <---public int RoomTypeId { get; set; }-->
-//       <---public RoomType RoomType { get; set; }-->
-
-
-// add <---public decimal TotalPrice { get; set; }-->

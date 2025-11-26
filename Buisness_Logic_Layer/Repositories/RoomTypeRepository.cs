@@ -11,10 +11,8 @@ namespace Buisness_Logic_Layer.Repositories
 {
     public class RoomTypeRepository : GenericRepository<RoomType>, IRoomTypeRepository
     {
-        private readonly DbContext _context;
         public RoomTypeRepository(DbContext context) : base(context)
         {
-            _context = context;
         }
     }
 }

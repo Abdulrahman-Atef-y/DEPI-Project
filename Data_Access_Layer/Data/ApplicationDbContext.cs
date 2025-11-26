@@ -18,10 +18,10 @@ namespace Data_Access_Layer.Data
         {
         }
         public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<HotelImage> HotelImages { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<RoomImage> RoomImages { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<Guest> Guests { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Review> Reviews { get; set; }
 

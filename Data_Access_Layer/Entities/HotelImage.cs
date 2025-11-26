@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    [Table("Images")]
-    public class RoomImage
+    [Table("HotelImages")]
+    public class HotelImage
     {
         public int Id { get; set; }
 
@@ -17,7 +17,7 @@ namespace Data_Access_Layer.Entities
         public string? ImageUrl { get; set; }
 
         [Required]
-        public int RoomTypeId { get; set; }
-        public RoomType RoomType { get; set; }
+        public int HotelId { get; set; }
+        public Hotel Hotel { get; set; }
     }
 }

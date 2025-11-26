@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -8,46 +8,37 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Entities
 {
-    [Table("Guest")]
-    public class Guest
+    public enum Gender
     {
-        public int Id { get; set; }
+        Male = 1,
+        Female = 2
+    }
+    public class Guest : IdentityUser
+    {
+        [Required(ErrorMessage = "First Name is required.")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "First Name must be between 2 and 50 characters.")]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string? FirstName { get; set; }
+        [Required(ErrorMessage = "Last Name is required.")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Last Name must be between 2 and 50 characters.")]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string? LastName { get; set; }
+        [Required(ErrorMessage = "Gender is required.")]
+        public Gender Gender { get; set; }
 
-        [Required]
-        [EmailAddress]
-        [MaxLength(100)]
-        public string? Email { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Birth")]
+        public DateTime? DateOfBirth { get; set; }
 
-        [Required]
-        public string? PhoneNumber { get; set; }
+        [StringLength(250, ErrorMessage = "Address cannot exceed 250 characters.")]
+        public string? Address { get; set; }
 
-        public string? SSN { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-
-        [MaxLength(10)]
-        public string? Gender { get; set; }
-        public string? Role { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public string? StripeCustomerId { get; set; }
         public List<Booking> Bookings { get; set; }
     }
 }
-
-
-
-
-
-/*
- rethink about the role field later
-
-add  public ICollection<Review> Reviews { get; set; }
-add enum for gender
- 
- */

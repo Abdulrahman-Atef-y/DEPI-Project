@@ -13,39 +13,25 @@ namespace Data_Access_Layer.Entities
     {
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(100)]
+        [Required(ErrorMessage = "Hotel Name is required.")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Hotel Name must be between 2 and 100 characters.")]
         public string? Name { get; set; }
         public string? Policies { get; set; }
+        [DataType(DataType.MultilineText)]
         public string? Description { get; set; }
-        public List<RoomType> RoomTypes { get; set; }
-    }
-}
-
-
-// suggested entity for scalability
-
-/*
- namespace Domain.Entities
-{
-    public class Hotel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Policies { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public string Phone { get; set; }
-        public float Rating { get; set; }
+        [MaxLength(200)]
+        public string? Address { get; set; }
+        [MaxLength(100)]
+        public string? City { get; set; }
+        [MaxLength(100)]
+        public string? Country { get; set; }
+        [Phone(ErrorMessage = "Invalid Phone Number.")]
+        [StringLength(20)]
+        public string? Phone { get; set; }
+        [Range(1, 5, ErrorMessage = "Stars must be between 1 and 5.")]
         public int Stars { get; set; }
-
-        // Navigation
-        public ICollection<RoomType> RoomTypes { get; set; }
+        public List<HotelImage> HotelImages { get; set; }
+        public List<RoomType> RoomTypes { get; set; } = new List<RoomType>();
         public ICollection<Review> Reviews { get; set; }
-        public ICollection<HotelImage> HotelImages { get; set; }
     }
 }
-
- */

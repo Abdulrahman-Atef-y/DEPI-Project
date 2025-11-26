@@ -17,6 +17,10 @@ namespace Data_Access_Layer.Data.Configurations
                 .WithOne(rt => rt.Hotel)
                 .HasForeignKey(rt => rt.HotelId)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(h => h.HotelImages)
+                .WithOne(hi => hi.Hotel)
+                .HasForeignKey(hi => hi.HotelId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

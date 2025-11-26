@@ -17,27 +17,13 @@ namespace Data_Access_Layer.Entities
         public int BookingId { get; set; }
         public Booking Booking { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Rating is required.")]
+        [Range(1, 5, ErrorMessage = "Rating must be between 1 and 5 stars.")]
         public int Rating { get; set; }
+        [StringLength(1000, ErrorMessage = "Comment cannot exceed 1000 characters.")]
+        [DataType(DataType.MultilineText)]
         public string? Comment { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime Date { get; set; } = DateTime.UtcNow;
     }
 }
-
-
-
-// sugested entity for the scalibility
-
-/*
- public int Id { get; set; }
-        public int BookingId { get; set; }
-        public int GuestId { get; set; }
-        public int HotelId { get; set; }
-
-        public int Rating { get; set; }
-        public string Comment { get; set; }
-        public DateTime Date { get; set; }
-
-        public Booking Booking { get; set; }
-        public Guest Guest { get; set; }
-        public Hotel Hotel { get; set; }
- */

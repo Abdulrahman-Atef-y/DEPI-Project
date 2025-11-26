@@ -11,10 +11,8 @@ namespace Buisness_Logic_Layer.Repositories
 {
     public class HotelRepository : GenericRepository<Hotel> , IHotelRepository
     {
-        private readonly DbContext _context;
         public HotelRepository(DbContext context) : base(context)
         {
-            _context = context;
         }
     }
 }

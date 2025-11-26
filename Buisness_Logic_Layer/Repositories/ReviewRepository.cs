@@ -11,10 +11,8 @@ namespace Buisness_Logic_Layer.Repositories
 {
     public class ReviewRepository : GenericRepository<Review>, IReviewRepository
     {
-        private readonly DbContext _context;
         public ReviewRepository(DbContext context) : base(context)
         {
-            _context = context;
         }
     }
 }

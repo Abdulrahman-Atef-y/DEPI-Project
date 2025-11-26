@@ -12,10 +12,8 @@ namespace Buisness_Logic_Layer.Repositories
 {
     public class BookingRepository : GenericRepository<Booking>, IBookingRepository
     {
-        private readonly DbContext _context;
         public BookingRepository(DbContext context) : base(context)
         {
-            _context = context;
         }
 
 

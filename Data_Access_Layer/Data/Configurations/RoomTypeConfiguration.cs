@@ -21,10 +21,6 @@ namespace Data_Access_Layer.Data.Configurations
                 .WithOne(r => r.RoomType)
                 .HasForeignKey(r => r.RoomTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(rt => rt.Bookings)
-                .WithOne(b => b.RoomType)
-                .HasForeignKey(b => b.RoomTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

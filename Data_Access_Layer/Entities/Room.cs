@@ -14,11 +14,15 @@ namespace Data_Access_Layer.Entities
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Room Number")]
+        [Range(1, 10000, ErrorMessage = "Room Number must be valid.")]
         public int RoomNumber { get; set; }
+        [Range(0, 100, ErrorMessage = "Floor must be a valid number.")]
+
         public int Floor { get; set; }
 
-        [MaxLength(20)]
-        public string? Status { get; set; }
+        [Required]
+        public roomStatus Status { get; set; } = roomStatus.Available;
 
         [Required]
         public int RoomTypeId { get; set; }
@@ -26,11 +30,3 @@ namespace Data_Access_Layer.Entities
         public List<Booking> Bookings { get; set; }
     }
 }
-
-
-
-/*
- 
-adding enum to status
-
- */
