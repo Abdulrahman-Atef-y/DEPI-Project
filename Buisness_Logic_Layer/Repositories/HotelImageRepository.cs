@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Buisness_Logic_Layer.Repositories
 {
-    public class GuestRepository : GenericRepository<Guest>, IGuestRepository
+    public class HotelImageRepository : GenericRepository<HotelImage>, IHotelImageRepository
     {
-        public GuestRepository(DbContext context) : base(context)
+        public HotelImageRepository(DbContext context) : base(context)
         {
 
         }
     }
+
 }
