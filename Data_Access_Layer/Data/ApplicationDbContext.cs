@@ -24,6 +24,7 @@ namespace Data_Access_Layer.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Guest> Guests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
