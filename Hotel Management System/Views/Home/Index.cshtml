@@ -1,8 +1,120 @@
 ﻿@{
+    Layout = "/Views/Shared/_Layout1.cshtml";
     ViewData["Title"] = "Home Page";
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+    <div class="hero-image">
+        <img src="/lib/img/HeroImage.png" alt="فندق جراند">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">جراند هوتيل</h1>
+            <p class="hero-subtitle">فندق 5 نجوم - تجربة فندقية استثنائية</p>
+            <button class="cta-button" onclick="scrollToRooms()">
+                <span>زورنا</span>
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<!-- Rooms Section -->
+<section id="rooms" class="rooms-section">
+    <div class="container">
+        <h2 class="section-title">غرفنا الفندقية</h2>
+        <p class="section-subtitle">اختر من بين أفضل الغرف الفندقية بتصاميم مميزة وتجهيزات متكاملة</p>
+
+        <div class="rooms-filter">
+            <button class="filter-btn active" data-filter="all">جميع الغرف</button>
+            <button class="filter-btn" data-filter="deluxe">ديلوكس</button>
+            <button class="filter-btn" data-filter="family">عائلية</button>
+            <button class="filter-btn" data-filter="suite">سويت</button>
+        </div>
+
+        <div class="rooms-grid" id="roomsGrid">
+            <div class="room-card" data-room-id="${room.id}">
+                <div class="room-image">
+                    <img src="${room.images[0]}" alt="${room.name}">
+                    <div class="room-overlay">
+                        <div class="room-price">${utils.formatCurrency(room.price)}/ليلة</div>
+                    </div>
+                    <button class="quick-book" onclick="roomManager.quickBook(${room.id})">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="room-content">
+                    <h3 class="room-title">${room.name}</h3>
+                    <p class="room-description">${room.description}</p>
+                    <div class="room-features">
+                        <span>
+                            <i class="fas fa-users"></i>
+                            ${room.capacity} أشخاص
+                        </span>
+                        <span>
+                            <i class="fas fa-expand"></i>
+                            ${room.size} م²
+                        </span>
+                        <span class="room-rating">
+                            <i class="fas fa-star"></i>
+                            ${room.rating}
+                        </span>
+                    </div>
+                    <div class="room-actions">
+                        <button class="btn-details" onclick="roomManager.showRoomDetails(${room.id})">
+                            <i class="fas fa-eye"></i>
+                            عرض التفاصيل
+                        </button>
+                        <button class="btn-book" onclick="bookingManager.startBooking(${room.id})">
+                            <i class="fas fa-calendar-check"></i>
+                            احجز الآن
+                        </button>
+                    </div>
+                </div>
+            </div>
+             <div class="room-card" data-room-id="${room.id}">
+                <div class="room-image">
+                    <img src="${room.images[0]}" alt="${room.name}">
+                    <div class="room-overlay">
+                        <div class="room-price">${utils.formatCurrency(room.price)}/ليلة</div>
+                    </div>
+                    <button class="quick-book" onclick="roomManager.quickBook(${room.id})">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="room-content">
+                    <h3 class="room-title">${room.name}</h3>
+                    <p class="room-description">${room.description}</p>
+                    <div class="room-features">
+                        <span>
+                            <i class="fas fa-users"></i>
+                            ${room.capacity} أشخاص
+                        </span>
+                        <span>
+                            <i class="fas fa-expand"></i>
+                            ${room.size} م²
+                        </span>
+                        <span class="room-rating">
+                            <i class="fas fa-star"></i>
+                            ${room.rating}
+                        </span>
+                    </div>
+                    <div class="room-actions">
+                        <button class="btn-details" onclick="roomManager.showRoomDetails(${room.id})">
+                            <i class="fas fa-eye"></i>
+                            عرض التفاصيل
+                        </button>
+                        <button class="btn-book" onclick="bookingManager.startBooking(${room.id})">
+                            <i class="fas fa-calendar-check"></i>
+                            احجز الآن
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
