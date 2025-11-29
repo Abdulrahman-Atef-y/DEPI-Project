@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> @ViewData["Title"] Grand Hotel - فندق 5 نجوم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/Style.css" >
+
+</head>
+<body>
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+    <div class="loading-content">
+        <div class="hotel-icon">
+            <i class="fas fa-hotel"></i>
+        </div>
+        <h2>جراند هوتيل</h2>
+        <div class="loading-spinner"></div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="#home">
+                <i class="fas fa-hotel"></i>
+                <span>جراند هوتيل</span>
+            </a>
+        </div>
+
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item">
+                <a href="#home" class="nav-link active">الرئيسية</a>
+            </li>
+            <li class="nav-item">
+                <a href="#rooms" class="nav-link">الغرف</a>
+            </li>
+            <li class="nav-item">
+                <a href="#bookings" class="nav-link">حجوزاتي</a>
+            </li>
+            <li class="nav-item" id="authNavItem">
+                <button class="btn-login" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    تسجيل الدخول
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="btn-admin" onclick="showAdminLoginModal()">
+                    <i class="fas fa-user-shield"></i>
+                    الدخول كأدمن
+                </button>
+            </li>
+            <li class="nav-item" id="userNavItem" style="display: none;">
+                <div class="user-nav">
+                    <img id="navUserAvatar" src="https://via.placeholder.com/40/667eea/ffffff?text=User" alt="User">
+                    <span id="navUserName">مستخدم</span>
+                    <div class="user-dropdown">
+                        <a href="#" onclick="openDashboard()"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item" id="adminNavItem" style="display: none;">
+                <div class="user-nav">
+                    <img id="navAdminAvatar" src="https://via.placeholder.com/40/27ae60/ffffff?text=A" alt="Admin">
+                    <span id="navAdminName">أدمن</span>
+                    <div class="user-dropdown">
+                        <a href="#" onclick="openAdminDashboard()"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a>
+                        <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="nav-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@grandhotel.com</p>
+                        <p><i class="fas fa-phone"></i> +20 123 456 7890</p>
+                        <p><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</p>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#rooms">الغرف</a></li>
+                        <li><a href="#bookings">حجوزاتي</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>خدماتنا</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">الدعم الفني</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">الشروط والأحكام</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 جراند هوتيل. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+
+
+</html>
+<script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+        
+        // Hide loading screen
+        setTimeout(() => {
+            document.getElementById('loadingScreen').remove();
+        }, 1000);
+
+        console.log('Grand Hotel Application Initialized');
+    });
+
+</script>
