@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Hotel_Management_System.Models.DTOs
+{
+    public class RoomTypeDTO
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
+
+        [DataType(DataType.Currency)]
+        public double Price { get; set; }
+
+        public int Occupancy { get; set; }
+        public string? ImageUrl { get; set; }
+        public int HotelId { get; set; }
+    }
+}

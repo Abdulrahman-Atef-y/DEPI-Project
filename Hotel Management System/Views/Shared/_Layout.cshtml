@@ -1,49 +1,130 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Hotel_Management_System</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - جراند هوتيل</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Hotel_Management_System.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Hotel_Management_System</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="hotel-icon">
+                <i class="fas fa-hotel"></i>
+            </div>
+            <h2>جراند هوتيل</h2>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-hotel"></i>
+                    <span>جراند هوتيل</span>
+                </a>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">الرئيسية</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Rooms" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Rooms" ? "active" : "")">الغرف</a>
+                </li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a asp-controller="Booking" asp-action="MyBookings" class="nav-link">حجوزاتي</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="user-nav">
+                            <img id="navUserAvatar" src="https://via.placeholder.com/40/667eea/ffffff?text=@User.Identity.Name?.Substring(0,1)" alt="User">
+                            <span>@User.Identity.Name</span>
+                            <div class="user-dropdown">
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a>
+                                }
+                                <a asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                            </div>
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item" id="authNavItem">
+                        <a asp-controller="Account" asp-action="Login" class="btn-login">
+                            <i class="fas fa-sign-in-alt"></i>
+                            تسجيل الدخول
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Account" asp-action="Register" class="btn-admin">
+                            <i class="fas fa-user-plus"></i>
+                            حساب جديد
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main role="main">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="notification notification-success">
+                <i class="fas fa-check-circle"></i>
+                <span>@TempData["SuccessMessage"]</span>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="notification notification-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>@TempData["ErrorMessage"]</span>
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@grandhotel.com</p>
+                        <p><i class="fas fa-phone"></i> +20 123 456 7890</p>
+                        <p><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a asp-controller="Home" asp-action="Index">الرئيسية</a></li>
+                        <li><a asp-controller="Rooms" asp-action="Index">الغرف</a></li>
                     </ul>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Hotel_Management_System - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-bottom">
+                <p>&copy; @DateTime.Now.Year جراند هوتيل. جميع الحقوق محفوظة.</p>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

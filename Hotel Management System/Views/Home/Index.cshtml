@@ -1,8 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Hotel_Management_System.Models.DTOs.RoomTypeDTO>
+@{
+    ViewData["Title"] = "الرئيسية";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero-section">
+    <div class="hero-image">
+        <img src="~/img/home.jpg" alt="Grand Hotel" style="width: 100%; height: 60vh; object-fit: cover;">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">جراند هوتيل</h1>
+            <p class="hero-subtitle">فندق 5 نجوم - تجربة فندقية استثنائية</p>
+            <a asp-controller="Rooms" asp-action="Index" class="cta-button" style="text-decoration:none;">
+                <span>استعرض الغرف</span>
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+</section>
+<section class="rooms-section" style="padding: 100px 0;">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">غرفنا المميزة</h2>
+        <p class="section-subtitle">إقامة فاخرة تناسب جميع الاحتياجات</p>
+
+        <div class="rooms-grid">
+            @if (Model != null && Model.Any())
+            {
+            @foreach (var roomType in Model.Take(4))
+            {
+                <div class="room-card">
+                    <div class="room-image">
+                            <img src="https://via.placeholder.com/800x600/667eea/ffffff?text=@roomType.Name" alt="@roomType.Name">
+                        <div class="room-overlay">
+                            <div class="room-price">@roomType.Price.ToString("C") / ليلة</div>
+                        </div>
+                    </div>
+                    <div class="room-content">
+                            <h3 class="room-title">@roomType.Name</h3>
+                            <p class="room-description">@roomType.Description?.Length > 100 ? roomType.Description.Substring(0, 100) + "..." : roomType.Description)</p>
+                        <div class="room-features">
+                                <span><i class="fas fa-users"></i> @roomType.Occupancy أشخاص</span>
+                        </div>
+                        <div class="room-actions mt-3">
+                                <a asp-controller="Booking" asp-action="Create" asp-route-roomTypeId="@roomType.Id" class="btn-book btn-primary w-100">
+                                <i class="fas fa-calendar-check"></i> احجز الآن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+            }
+            else
+            {
+                <div class="no-data">
+                    <i class="fas fa-bed"></i>
+                    <p>الرجاء إضافة أنواع غرف من لوحة التحكم لتظهر هنا.</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>

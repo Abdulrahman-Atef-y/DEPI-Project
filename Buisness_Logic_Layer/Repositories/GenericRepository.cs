@@ -73,10 +73,18 @@ namespace Buisness_Logic_Layer.Repositories
             return changes > 0;
         }
 
-        public async Task<IEnumerable<T>> FindAllAsync(int? skip = null, int? take = null, Expression<Func<T, object>>? orderBy = null, bool isDesc = false, Expression<Func<T, bool>>? criteria = null)
+        public async Task<IEnumerable<T>> FindAllAsync(int? skip = null, int? take = null, Expression<Func<T, object>>? orderBy = null, bool isDesc = false, Expression<Func<T, bool>>? criteria = null, string[]? includes = null)
         {
             IQueryable<T> query = _dbSet.AsQueryable();
 
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    if (!string.IsNullOrWhiteSpace(include))
+                        query = query.Include(include);
+                }
+            }
             if (criteria != null)
                 query = query.Where(criteria);
 

@@ -1,0 +1,47 @@
+﻿@model Hotel_Management_System.Models.DTOs.BookingDTO
+@{
+    ViewData["Title"] = "حجز الغرفة";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3><i class="fas fa-calendar-alt"></i> حجز @Model.RoomTypeName</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>سعر الليلة:</strong> @Model.PricePerNight.ToString("C")
+                    </div>
+
+                    <form asp-action="Create">
+                        <input type="hidden" asp-for="RoomTypeId" />
+                        <input type="hidden" asp-for="PricePerNight" />
+                        <input type="hidden" asp-for="RoomTypeName" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label asp-for="CheckInDate"></label>
+                                <input asp-for="CheckInDate" class="form-control" type="date" />
+                                <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label asp-for="CheckOutDate"></label>
+                                <input asp-for="CheckOutDate" class="form-control" type="date" />
+                                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success btn-lg w-100">تأكيد الحجز</button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary w-100 mt-2">إلغاء</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

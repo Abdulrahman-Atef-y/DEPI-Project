@@ -1,0 +1,79 @@
+﻿@model Hotel_Management_System.Models.DTOs.RegisterDTO
+@using Data_Access_Layer.Entities
+@{
+    ViewData["Title"] = "إنشاء حساب جديد";
+}
+
+<div class="modal" style="display: flex; position: relative; min-height: 80vh; background: linear-gradient(135deg, #2c3e50, #3498db); padding: 50px 0;">
+    <div class="modal-container">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus"></i> إنشاء حساب جديد</h2>
+            </div>
+
+            <div asp-validation-summary="ModelOnly" class="alert error"></div>
+
+            <form asp-action="Register">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="FirstName">الاسم الأول</label>
+                        <input asp-for="FirstName" placeholder="الاسم الأول" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName">الاسم الأخير</label>
+                        <input asp-for="LastName" placeholder="الاسم الأخير" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email">البريد الإلكتروني</label>
+                    <input asp-for="Email" placeholder="example@mail.com" />
+                    <i class="fas fa-envelope input-icon"></i>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PhoneNumber">رقم الهاتف</label>
+                    <input asp-for="PhoneNumber" placeholder="01xxxxxxxxx" />
+                    <i class="fas fa-phone input-icon"></i>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <!-- Gender Dropdown -->
+                <div class="form-group">
+                    <label asp-for="GenderId">النوع</label>
+                    <select asp-for="GenderId" asp-items="Html.GetEnumSelectList<Gender>()" class="form-control">
+                        <option value="">-- اختر --</option>
+                    </select>
+                    <span asp-validation-for="GenderId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password">كلمة المرور</label>
+                    <input asp-for="Password" placeholder="******" />
+                    <i class="fas fa-lock input-icon"></i>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword">تأكيد كلمة المرور</label>
+                    <input asp-for="ConfirmPassword" placeholder="******" />
+                    <i class="fas fa-lock input-icon"></i>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn-primary">إنشاء حساب</button>
+            </form>
+
+            <div class="modal-footer">
+                <p>لديك حساب بالفعل؟ <a asp-action="Login">تسجيل الدخول</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

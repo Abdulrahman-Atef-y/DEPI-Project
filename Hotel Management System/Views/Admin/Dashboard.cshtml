@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "لوحة التحكم";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="section-title" style="text-align: right; margin-bottom: 20px; color: #2c3e50;">نظرة عامة</h2>
+<div class="quick-stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(52, 152, 219, 0.1); color: #3498db;">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <h3>@Model.TotalUsers</h3>
+            <p>العملاء</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="stat-info">
+            <h3>@Model.TotalBookings</h3>
+            <p>الحجوزات</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(241, 196, 15, 0.1); color: #f39c12;">
+            <i class="fas fa-money-bill-wave"></i>
+        </div>
+        <div class="stat-info">
+            <h3>@Model.TotalRevenue.ToString("C0")</h3>
+            <p>الإيرادات</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">
+            <i class="fas fa-bed"></i>
+        </div>
+        <div class="stat-info">
+            <h3>@Model.TotalRooms</h3>
+            <p>الغرف</p>
+        </div>
+    </div>
+</div>
+<div class="charts-row" style="margin-top: 30px;">
+    <div class="chart-container">
+        <h3><i class="fas fa-chart-line"></i> إحصائيات الحجوزات (شهرياً)</h3>
+        <div style="height: 300px;">
+            <canvas id="bookingsChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-container">
+        <h3><i class="fas fa-chart-pie"></i> توزيع الغرف</h3>
+        <div style="height: 300px;">
+            <canvas id="roomsChart"></canvas>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top: 30px; display: flex; gap: 20px; flex-wrap: wrap;">
+    <div class="recent-activity" style="flex: 2; min-width: 300px;">
+        <h3><i class="fas fa-history"></i> أحدث الحجوزات</h3>
+        <div class="activity-list">
+            @if (Model.RecentBookings != null && Model.RecentBookings.Count > 0)
+            {
+                foreach (var booking in Model.RecentBookings)
+                {
+                    <div class="activity-item">
+                        <div class="activity-icon booking">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p><strong>@booking.Guest.FirstName @booking.Guest.LastName</strong> قام بحجز الغرفة رقم @booking.Room.RoomNumber</p>
+                            <span class="activity-time">@booking.Date.ToShortDateString() - @booking.TotalPrice.ToString("C0")</span>
+                        </div>
+                        <span class="badge @(booking.Status == "Confirmed" ? "bg-success" : "bg-warning")">
+                            @booking.Status
+                        </span>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted text-center">لا توجد حجوزات حديثة</p>
+            }
+        </div>
+    </div>
+    <div class="management-tools" style="flex: 1; min-width: 250px;">
+        <h3><i class="fas fa-tools"></i> إجراءات سريعة</h3>
+        <div class="tools-grid" style="grid-template-columns: 1fr;">
+            <a asp-controller="Room" asp-action="Create" class="tool-card" style="text-decoration:none; display:block;">
+                <i class="fas fa-plus-circle"></i>
+                <h4>إضافة غرفة</h4>
+                <p>تسجيل غرفة جديدة في النظام</p>
+            </a>
+            <a asp-controller="RoomType" asp-action="Create" class="tool-card" style="text-decoration:none; display:block;">
+                <i class="fas fa-layer-group"></i>
+                <h4>نوع غرفة جديد</h4>
+                <p>إضافة فئة سعرية جديدة</p>
+            </a>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const bookingCtx = document.getElementById('bookingsChart').getContext('2d');
+        new Chart(bookingCtx, {
+            type: 'line',
+            data: {
+                labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                datasets: [{
+                    label: 'عدد الحجوزات',
+                    data: @Json.Serialize(Model.MonthlyBookings),
+                borderColor: '#3498db',
+                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+        const roomsCtx = document.getElementById('roomsChart').getContext('2d');
+        new Chart(roomsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: @Json.Serialize(Model.RoomTypeLabels),
+                datasets: [{
+                    data: @Json.Serialize(Model.RoomTypeCounts),
+                    backgroundColor: ['#3498db', '#e74c3c', '#f39c12', '#27ae60', '#8e44ad'],
+                    borderWidth: 0
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    </script>
+}

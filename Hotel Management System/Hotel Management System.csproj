@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\Style.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
@@ -18,5 +22,8 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.8" />
 	  <ProjectReference Include="..\Data_Access_Layer\Data_Access_Layer.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Buisness_Logic_Layer\Buisness_Logic_Layer.csproj" />
+	</ItemGroup>
 
 </Project>

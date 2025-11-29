@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36603.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel Management System", "Hotel Management System.csproj", "{98663568-5280-4820-8409-88CCA9F80832}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E6E3557C-4F2A-4596-BB9D-B6CE121CE739} = {E6E3557C-4F2A-4596-BB9D-B6CE121CE739}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data_Access_Layer", "..\Data_Access_Layer\Data_Access_Layer.csproj", "{65C9A837-B777-41A9-99C4-E93BBFE543CD}"
 EndProject

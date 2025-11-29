@@ -1,4 +1,5 @@
 using Buisness_Logic_Layer.Interfaces;
+using Data_Access_Layer.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace Buisness_Logic_Layer.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
         private bool _disposed;
 
         private IRoomRepository? _roomRepository;
@@ -18,7 +19,7 @@ namespace Buisness_Logic_Layer.Repositories
         private IReviewRepository? _reviewRepository;
         private IGuestRepository? _guestRepository;
 
-        public UnitOfWork(DbContext context)
+        public UnitOfWork(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

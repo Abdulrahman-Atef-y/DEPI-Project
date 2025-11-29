@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Hotel_Management_System.Models.DTOs.RoomDTO>
+@{
+    ViewData["Title"] = "إدارة الغرف";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4" style="display:flex; justify-content:space-between;">
+    <h2>إدارة الغرف</h2>
+    <a asp-action="Create" class="btn-primary" style="text-decoration:none;">
+        <i class="fas fa-plus"></i> إضافة غرفة جديدة
+    </a>
+</div>
+
+<div class="table-responsive" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <table class="table" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 2px solid #eee; text-align: right;">
+                <th style="padding: 15px;">رقم الغرفة</th>
+                <th style="padding: 15px;">الطابق</th>
+                <th style="padding: 15px;">الحالة</th>
+                <th style="padding: 15px;">الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 15px;">@item.RoomNumber</td>
+                    <td style="padding: 15px;">@item.Floor</td>
+                    <td style="padding: 15px;">
+                        <span class="badge" style="padding: 5px 10px; border-radius: 15px; background: #e8f5e9; color: #2e7d32;">
+                            @item.Status
+                        </span>
+                    </td>
+                    <td style="padding: 15px;">
+                        <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('هل أنت متأكد؟')" style="color: #e74c3c;">
+                            <i class="fas fa-trash"></i> حذف
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Hotel_Management_System.Models.DTOs.RoomTypeDTO>
+@{
+    ViewData["Title"] = "أنواع الغرف";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>إدارة أنواع الغرف</h2>
+    <a asp-action="Create" class="btn-primary" style="text-decoration:none;">
+        <i class="fas fa-plus"></i> إضافة نوع جديد
+    </a>
+</div>
+
+<div class="table-responsive" style="background: white; padding: 20px; border-radius: 8px;">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>الاسم</th>
+                <th>السعر</th>
+                <th>السعة</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@item.Occupancy</td>
+                    <td>
+                        <a href="#" style="color: #e74c3c;"><i class="fas fa-trash"></i> حذف</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

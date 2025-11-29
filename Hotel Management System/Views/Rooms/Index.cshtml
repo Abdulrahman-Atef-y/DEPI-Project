@@ -1,0 +1,43 @@
+﻿@model IEnumerable<RoomTypeDTO>
+@{
+    ViewData["Title"] = "الغرف";
+}
+
+<section id="rooms" class="rooms-section" style="padding-top: 120px;">
+    <h2 class="section-title">جميع الغرف</h2>
+    <div class="rooms-filter">
+        <a asp-action="Index" class="filter-btn active">الكل</a>
+        <a asp-action="Index" asp-route-sortOrder="price_asc" class="filter-btn">الأقل سعراً</a>
+        <a asp-action="Index" asp-route-sortOrder="price_desc" class="filter-btn">الأعلى سعراً</a>
+    </div>
+
+    <div class="rooms-grid" id="roomsGrid">
+        @foreach (var room in Model)
+        {
+            <div class="room-card">
+                <div class="room-image">
+                    <img src="@(string.IsNullOrEmpty(room.ImageUrl) ? "https://via.placeholder.com/800x600" : room.ImageUrl)" alt="@room.Name">
+                    <div class="room-overlay">
+                        <div class="room-price">@room.Price.ToString("C")</div>
+                    </div>
+                </div>
+                <div class="room-content">
+                    <h3 class="room-title">@room.Name</h3>
+                    <p class="room-description">@room.Description</p>
+                    <div class="room-features">
+                        <span><i class="fas fa-users"></i> @room.Occupancy أشخاص</span>
+                    </div>
+                    <div class="room-actions">
+                        <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id" class="btn-details">
+                            <i class="fas fa-eye"></i> التفاصيل
+                        </a>
+                        <a asp-controller="Booking" asp-action="Create" asp-route-roomTypeId="@room.Id" class="btn-book">
+                            <i class="fas fa-calendar-check"></i> احجز الآن
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    </div>
+</section>

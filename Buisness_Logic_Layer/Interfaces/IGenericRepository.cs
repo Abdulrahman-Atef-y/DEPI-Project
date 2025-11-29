@@ -26,7 +26,8 @@ namespace Buisness_Logic_Layer.Interfaces
             int? take = null,
             Expression<Func<T, object>>? orderBy = null,
             bool isDesc = false,
-            Expression<Func<T, bool>>? criteria = null);
+            Expression<Func<T, bool>>? criteria = null,
+            string[]? includes = null);
 
         Task<IEnumerable<T>> FindAllAsync(
             Expression<Func<T, bool>>? criteria = null,
