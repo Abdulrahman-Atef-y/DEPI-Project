@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Data_Access_Layer.Entities.Booking>
+@{
+    ViewData["Title"] = "إدارة الحجوزات";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2><i class="fas fa-calendar-alt"></i> إدارة الحجوزات</h2>
+
+<div class="table-responsive" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <table class="table" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 2px solid #eee; text-align: right;">
+                <th style="padding: 15px;">رقم الحجز</th>
+                <th style="padding: 15px;">العميل</th>
+                <th style="padding: 15px;">الغرفة</th>
+                <th style="padding: 15px;">التاريخ</th>
+                <th style="padding: 15px;">المجموع</th>
+                <th style="padding: 15px;">الحالة</th>
+                <th style="padding: 15px;">إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 15px;">#BK-@item.Id</td>
+                    <td style="padding: 15px;">@item.Guest.FirstName @item.Guest.LastName</td>
+                    <td style="padding: 15px;">@item.Room.RoomNumber</td>
+                    <td style="padding: 15px;">@item.CheckInDate.ToShortDateString()</td>
+                    <td style="padding: 15px;">@item.TotalPrice.ToString("C0")</td>
+                    <td style="padding: 15px;">
+                        <span class="badge" style="padding: 5px 10px; border-radius: 15px; background: #f39c12; color: #e67e22;">@item.Status</span>
+                    </td>
+                    <td style="padding: 15px;">
+                        <a asp-action="ChangeStatus" asp-route-id="@item.Id" asp-route-status="Confirmed" class="btn btn-sm btn-success" style="background: #27ae60; color: white; text-decoration: none;">تأكيد</a>
+                        <form asp-action="Cancel" asp-route-id="@item.Id" method="post" style="display:inline;"
+                              onsubmit="return confirm('هل أنت متأكد من إلغاء هذا الحجز؟');">
+                            <button type="submit" class="btn btn-sm btn-danger" style="background: #e74c3c; color: white;">
+                                إلغاء
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

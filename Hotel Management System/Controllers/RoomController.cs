@@ -64,7 +64,7 @@ namespace Hotel_Management_System.Controllers
 
                 await _unitOfWork.RoomRepository.AddAsync(room);
                 await _unitOfWork.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Room created successfully!";
+                TempData["SuccessMessage"] = "تم انشاء غرفة بنجاح!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -78,14 +78,21 @@ namespace Hotel_Management_System.Controllers
             return View(roomDto);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var room = await _unitOfWork.RoomRepository.GetByIdAsync(id);
             if (room == null) return NotFound();
 
+            var bookings = await _unitOfWork.BookingRepository.FindAllAsync(b => b.RoomId == id);
+            if (bookings.Any())
+            {
+                TempData["ErrorMessage"] = "لا يمكن حذف الغرفة لأنها مرتبطة بالحجوزات الحالية.";
+                return RedirectToAction(nameof(Index));
+            }
             await _unitOfWork.RoomRepository.DeleteAsync(room);
-            await _unitOfWork.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Room deleted successfully!";
+            TempData["SuccessMessage"] = "تم حذف الغرفة بنجاح!";
             return RedirectToAction(nameof(Index));
         }
     }

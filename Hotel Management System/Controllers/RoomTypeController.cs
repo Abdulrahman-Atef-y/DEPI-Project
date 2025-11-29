@@ -78,6 +78,27 @@ namespace Hotel_Management_System.Controllers
                 dto.Description = "غرفة فاخرة بتصميم عصري مع إطلالة رائعة على المدينة، مجهزة بأحدث وسائل الراحة.";
             return View(dto);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var roomType = await _unitOfWork.RoomTypeRepository.GetByIdAsync(id);
+            if (roomType == null)
+            {
+                TempData["ErrorMessage"] = "نوع الغرفة غير موجود.";
+                return RedirectToAction(nameof(Index));
+            }
+            var roomsWithType = await _unitOfWork.RoomRepository.FindAllAsync(r => r.RoomTypeId == id);
+            if (roomsWithType.Any())
+            {
+                TempData["ErrorMessage"] = "لا يمكن حذف نوع الغرفة لأنه مرتبط بغرف موجودة.";
+                return RedirectToAction(nameof(Index));
+            }
+            await _unitOfWork.RoomTypeRepository.DeleteAsync(roomType);
+
+            TempData["SuccessMessage"] = "تم حذف نوع الغرفة بنجاح.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 
 }

@@ -22,6 +22,11 @@ namespace Data_Access_Layer.Data.Configurations
                 .HasForeignKey(b => b.GuestId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(b => b.Room)
+       .WithMany(r => r.Bookings)
+       .HasForeignKey(b => b.RoomId)
+       .IsRequired()
+       .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Data_Access_Layer.Data.Configurations
             builder.HasMany(rt => rt.Rooms)
                 .WithOne(r => r.RoomType)
                 .HasForeignKey(r => r.RoomTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

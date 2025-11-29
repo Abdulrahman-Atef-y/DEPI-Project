@@ -31,6 +31,14 @@
                             <div class="col-md-4 text-right">
                                 <h4>@item.TotalPrice.ToString("C")</h4>
                             </div>
+                            <div class="col-md-3 text-right">
+                                <form asp-action="Cancel" asp-route-id="@item.Id" method="post"
+                                      onsubmit="return confirm('هل أنت متأكد من إلغاء هذا الحجز؟');">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-times"></i> إلغاء الحجز
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

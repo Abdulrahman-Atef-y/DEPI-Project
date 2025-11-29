@@ -29,7 +29,12 @@
                     <td>@item.Price.ToString("C")</td>
                     <td>@item.Occupancy</td>
                     <td>
-                        <a href="#" style="color: #e74c3c;"><i class="fas fa-trash"></i> حذف</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;"
+                              onsubmit="return confirm('هل أنت متأكد؟');">
+                            <button type="submit" class="btn btn-link p-0" style="color: #e74c3c;">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }

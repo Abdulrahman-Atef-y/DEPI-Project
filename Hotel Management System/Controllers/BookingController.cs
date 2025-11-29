@@ -96,5 +96,18 @@ namespace Hotel_Management_System.Controllers
 
             return View(allBookings.OrderByDescending(b => b.Date));
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var booking = await _unitOfWork.BookingRepository.GetByIdAsync(id);
+            if (booking == null) return NotFound();
+
+            await _unitOfWork.BookingRepository.DeleteAsync(booking);
+            await _unitOfWork.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "تم حذف الحجز بنجاح!";
+            return RedirectToAction(nameof(MyBookings));
+        }
     }
 }

@@ -22,7 +22,11 @@
                 <input asp-for="Price" type="number" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-
+            <li style="margin-bottom: 15px;">
+                <a asp-controller="RoomType" asp-action="Index" style="color: white; text-decoration: none;">
+                    <i class="fas fa-layer-group"></i> إدارة الفئات
+                </a>
+            </li>
             <div class="form-group">
                 <label asp-for="Occupancy">عدد الأشخاص</label>
                 <input asp-for="Occupancy" type="number" class="form-control" />

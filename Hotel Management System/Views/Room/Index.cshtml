@@ -33,9 +33,12 @@
                         </span>
                     </td>
                     <td style="padding: 15px;">
-                        <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('هل أنت متأكد؟')" style="color: #e74c3c;">
-                            <i class="fas fa-trash"></i> حذف
-                        </a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;"
+                              onsubmit="return confirm('هل أنت متأكد من حذف هذه الغرفة؟');">
+                            <button type="submit" class="btn btn-sm btn-danger" style="color:white; background:#e74c3c;">
+                                حذف
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }
