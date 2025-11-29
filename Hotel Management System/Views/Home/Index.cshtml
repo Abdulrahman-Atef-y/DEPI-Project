@@ -36,7 +36,7 @@
                     </div>
                     <div class="room-content">
                             <h3 class="room-title">@roomType.Name</h3>
-                            <p class="room-description">@roomType.Description?.Length > 100 ? roomType.Description.Substring(0, 100) + "..." : roomType.Description)</p>
+                            <p class="room-description">@(roomType.Description?.Length > 100 ? roomType.Description.Substring(0, 100) + "..." : roomType.Description)</p>
                         <div class="room-features">
                                 <span><i class="fas fa-users"></i> @roomType.Occupancy أشخاص</span>
                         </div>

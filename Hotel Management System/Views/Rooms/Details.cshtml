@@ -1,0 +1,11 @@
+﻿@model Hotel_Management_System.Models.DTOs.RoomTypeDTO
+
+<section class="details-page">
+    <h2>@Model.Name</h2>
+    <img src="@Model.ImageUrl" alt="@Model.Name" style="width:400px;">
+    <p>@Model.Description</p>
+    <p>السعر: @Model.Price</p>
+    <p>السعة: @Model.Occupancy أشخاص</p>
+
+    <a asp-controller="Rooms" asp-action="Index">عودة للقائمة</a>
+</section>
