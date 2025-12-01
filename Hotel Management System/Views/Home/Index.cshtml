@@ -1,16 +1,21 @@
 ﻿@model IEnumerable<Hotel_Management_System.Models.DTOs.RoomTypeDTO>
+
 @{
     ViewData["Title"] = "الرئيسية";
 }
 
 <section class="hero-section">
     <div class="hero-image">
-        <img src="~/img/home.jpg" alt="Grand Hotel" style="width: 100%; height: 60vh; object-fit: cover;">
+        @{
+            var heroImages = new[] { "HeroImage.png", "HeroImage1.png" };
+            var randomImage = heroImages[new Random().Next(heroImages.Length)];
+        }
+        <img src="@Url.Content($"~/Heroimg/{randomImage}")" alt="Grand Hotel" style="width:100%; height:60vh; object-fit:cover;">   
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">جراند هوتيل</h1>
             <p class="hero-subtitle">فندق 5 نجوم - تجربة فندقية استثنائية</p>
-            <a asp-controller="Rooms" asp-action="Index" class="cta-button" style="text-decoration:none;">
+            <a asp-controller="Rooms" asp-action="Index" class="cta-button">
                 <span>استعرض الغرف</span>
                 <i class="fas fa-arrow-left"></i>
             </a>
@@ -29,10 +34,18 @@
             {
                 <div class="room-card">
                     <div class="room-image">
-                            <img src="https://via.placeholder.com/800x600/667eea/ffffff?text=@roomType.Name" alt="@roomType.Name">
-                        <div class="room-overlay">
-                            <div class="room-price">@roomType.Price.ToString("C") / ليلة</div>
-                        </div>
+                            <div class="carousel-container">
+                                <img id="mainImage-@roomType.Id" src="@(roomType.ImageUrls.FirstOrDefault() ?? "https://via.placeholder.com/800x600?text=No+Image")" alt="@roomType.Name">
+
+                                <button class="gallery-nav prev" onclick="prevImage(@roomType.Id)">&#10094;</button>
+                                <button class="gallery-nav next" onclick="nextImage(@roomType.Id)">&#10095;</button>
+
+                                <div class="image-counter" id="counter-@roomType.Id">1 / @roomType.ImageUrls.Count</div>
+                                <div class="room-overlay">
+                                    <div class="room-price">@roomType.Price.ToString("C") / ليلة</div>
+                                </div>
+                            </div>
+       
                     </div>
                     <div class="room-content">
                             <h3 class="room-title">@roomType.Name</h3>
@@ -59,3 +72,31 @@
         </div>
     </div>
 </section>
+@section Scripts {
+    <script>
+        const roomImages = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+        Model?.ToDictionary(r => r.Id, r => r.ImageUrls) ?? new Dictionary<int, List<string>>()
+        ));
+        const currentIndex = {};
+        Object.keys(roomImages).forEach(id => currentIndex[id] = 0);
+
+        function showImage(roomId) {
+            const imgs = roomImages[roomId];
+            const index = currentIndex[roomId];
+            document.getElementById('mainImage-' + roomId).src = imgs[index];
+            document.getElementById('counter-' + roomId).innerText = (index + 1) + ' / ' + imgs.length;
+        }
+
+        function nextImage(roomId) {
+            currentIndex[roomId]++;
+            if (currentIndex[roomId] >= roomImages[roomId].length) currentIndex[roomId] = 0;
+            showImage(roomId);
+        }
+
+        function prevImage(roomId) {
+            currentIndex[roomId]--;
+            if (currentIndex[roomId] < 0) currentIndex[roomId] = roomImages[roomId].length - 1;
+            showImage(roomId);
+        }
+    </script>
+}

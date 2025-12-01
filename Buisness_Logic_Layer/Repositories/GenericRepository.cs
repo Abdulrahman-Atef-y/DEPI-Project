@@ -25,7 +25,6 @@ namespace Buisness_Logic_Layer.Repositories
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 

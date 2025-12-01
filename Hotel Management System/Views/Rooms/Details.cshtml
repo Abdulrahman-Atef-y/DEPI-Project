@@ -1,11 +1,60 @@
 ﻿@model Hotel_Management_System.Models.DTOs.RoomTypeDTO
 
-<section class="details-page">
-    <h2>@Model.Name</h2>
-    <img src="@Model.ImageUrl" alt="@Model.Name" style="width:400px;">
-    <p>@Model.Description</p>
-    <p>السعر: @Model.Price</p>
-    <p>السعة: @Model.Occupancy أشخاص</p>
+<section class="details-page text-center room-details-content" style="width:100%;padding:50px 20px; background:white;">
+    <div class="room-gallery" style="width:100%; max-width:1000px;margin:0 auto;">
+        <div class="gallery-main">
+            <img id="mainImage" src="@(Model.ImageUrls.FirstOrDefault() ?? "https://via.placeholder.com/800x600")" alt="@Model.Name">
+            <button class="gallery-nav prev" onclick="prevImage()">&#10094;</button>
+            <button class="gallery-nav next" onclick="nextImage()">&#10095;</button>
+            <div class="image-counter" id="imageCounter">1 / @Model.ImageUrls.Count</div>
+        </div>
+    </div>
 
-    <a asp-controller="Rooms" asp-action="Index">عودة للقائمة</a>
+    <div class="room-info text-center" style="max-width:700px;margin:20px auto;">
+        <h2>@Model.Name</h2>
+        <p>@Model.Description</p>
+        <div class="room-meta">
+            <span><i class="fas fa-users"></i> @Model.Occupancy أشخاص</span>
+            <span class="price"><i class="fas fa-dollar-sign"></i> @Model.Price.ToString("C") / ليلة</span>
+        </div>
+
+        @if (Model.Features != null && Model.Features.Any())
+        {
+            <div class="room-features">
+                <h3>المميزات</h3>
+                <div class="features-grid">
+                    @foreach (var feature in Model.Features)
+                    {
+                        <div class="feature-item">@feature</div>
+                    }
+                </div>
+            </div>
+        }
+
+        <a href="@Url.Action("Index", "Rooms")" class="btn btn-primary btn-lg mt-3">عودة للقائمة</a>
+    </div>
 </section>
+
+@section Scripts {
+    <script>
+        const images = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ImageUrls ?? new List<string>()));
+        let currentIndex = 0;
+
+        function showImage() {
+            document.getElementById('mainImage').src = images[currentIndex];
+            document.getElementById('imageCounter').innerText = (currentIndex + 1) + ' / ' + images.length;
+        }
+
+        function nextImage() {
+            currentIndex++;
+            if (currentIndex >= images.length) currentIndex = 0;
+            showImage();
+        }
+
+        function prevImage() {
+            currentIndex--;
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            showImage();
+        }
+    </script>
+}

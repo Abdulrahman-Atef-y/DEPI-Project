@@ -18,6 +18,9 @@ namespace Buisness_Logic_Layer.Repositories
         private IBookingRepository? _bookingRepository;
         private IReviewRepository? _reviewRepository;
         private IGuestRepository? _guestRepository;
+        private IRoomImageRepository? _roomImageRepository;
+
+
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -31,6 +34,9 @@ namespace Buisness_Logic_Layer.Repositories
         public IBookingRepository BookingRepository => _bookingRepository ??= new BookingRepository(_context);
         public IReviewRepository ReviewRepository => _reviewRepository ??= new ReviewRepository(_context);
         public IGuestRepository GuestRepository => _guestRepository ??= new GuestRepository(_context);
+        public IRoomImageRepository RoomImageRepository => _roomImageRepository ??= new RoomImageRepository(_context);
+
+
 
         public Task<int> SaveChangesAsync()
         {

@@ -3,46 +3,48 @@
     ViewData["Title"] = "حجوزاتي";
 }
 
-<div class="container mt-5">
-    <h2><i class="fas fa-list"></i> سجل الحجوزات</h2>
+<div class="container mt-5" style="padding-top: 120px;">
+    <h2 class="fw-bold mb-4"><i class="fas fa-list"></i> سجل الحجوزات</h2>
 
-    @if (!Model.Any())
+    @if (Model == null || !Model.Any())
     {
-        <div class="alert alert-warning mt-4">
-            لا توجد حجوزات سابقة. <a asp-controller="Home" asp-action="Index">احجز غرفتك الآن!</a>
+        <div class="text-center mt-5">
+            <i class="fas fa-bed fa-3x mb-3 text-secondary"></i>
+            <h4 class="mb-3">لم تقم بحجز أي غرفة بعد</h4>
+            <p class="mb-4">ابدأ رحلتك معنا الآن واختر غرفتك المفضلة!</p>
+            <a asp-controller="Rooms" asp-action="Index" class="btn btn-primary btn-lg">
+                تصفح الغرف
+            </a>
         </div>
     }
     else
     {
-        <div class="bookings-list mt-4">
             @foreach (var item in Model)
             {
-                <div class="card mb-3 shadow-sm">
-                    <div class="card-body">
+            <div class="card mb-3 shadow-sm" p-3" style="border-radius:14px;">
                         <div class="row align-items-center">
                             <div class="col-md-4">
                                 <h5>رقم الغرفة: @item.Room.RoomNumber</h5>
                                 <span class="badge badge-success">@item.Status</span>
                             </div>
                             <div class="col-md-4">
-                                <p class="mb-0"><i class="fas fa-calendar-in"></i> دخول: @item.CheckInDate.ToShortDateString()</p>
-                                <p class="mb-0"><i class="fas fa-calendar-out"></i> خروج: @item.CheckOutDate.ToShortDateString()</p>
+                        <p class="mb-1"><strong>دخول:</strong> @item.CheckInDate.ToShortDateString()</p>
+                        <p class="mb-1"><strong>خروج:</strong> @item.CheckOutDate.ToShortDateString()</p>
                             </div>
-                            <div class="col-md-4 text-right">
-                                <h4>@item.TotalPrice.ToString("C")</h4>
+                    <div class="col-md-4 text-end">
+                        <h4 class= "text-primary">@item.TotalPrice.ToString("C")</h4>
                             </div>
                             <div class="col-md-3 text-right">
                                 <form asp-action="Cancel" asp-route-id="@item.Id" method="post"
                                       onsubmit="return confirm('هل أنت متأكد من إلغاء هذا الحجز؟');">
-                                    <button type="submit" class="btn btn-danger btn-sm">
+                                    <button type="submit" class="btn btn-danger btn-sm mt-2">
                                         <i class="fas fa-times"></i> إلغاء الحجز
                                     </button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div>
             }
-        </div>
     }
 </div>
+<link rel="stylesheet" href="~/css/admin-roomtype.css" />

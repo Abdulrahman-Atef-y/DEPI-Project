@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Hotel_Management_System.Models.DTOs.RoomTypeDTO>
 @{
-    ViewData["Title"] = "أنواع الغرف";
+    ViewData["Title"] = "إدارة أنواع الغرف";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -11,14 +11,14 @@
     </a>
 </div>
 
-<div class="table-responsive" style="background: white; padding: 20px; border-radius: 8px;">
-    <table class="table">
+<div class="table-responsive" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <table class="table" style="width: 100%; border-collapse: collapse;">
         <thead>
             <tr>
                 <th>الاسم</th>
                 <th>السعر</th>
                 <th>السعة</th>
-                <th>الإجراءات</th>
+                <th class="text-center">الإجراءات</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +28,7 @@
                     <td>@item.Name</td>
                     <td>@item.Price.ToString("C")</td>
                     <td>@item.Occupancy</td>
-                    <td>
+                    <td class="text-center">
                         <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;"
                               onsubmit="return confirm('هل أنت متأكد؟');">
                             <button type="submit" class="btn btn-link p-0" style="color: #e74c3c;">
@@ -41,3 +41,4 @@
         </tbody>
     </table>
 </div>
+<link rel="stylesheet" href="~/css/admin-roomtype.css" />

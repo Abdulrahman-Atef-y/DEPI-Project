@@ -3,6 +3,7 @@ using Buisness_Logic_Layer.Interfaces;
 using Hotel_Management_System.Models.DTOs;
 using Hotel_Management_System.Models;
 using Microsoft.AspNetCore.Mvc;
+using Data_Access_Layer.Entities;
 
 namespace Hotel_Management_System.Controllers
 {
@@ -19,7 +20,8 @@ namespace Hotel_Management_System.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var roomTypes = await _unitOfWork.RoomTypeRepository.GetAllAsync();
+          var roomTypes = await _unitOfWork.RoomTypeRepository.FindAllAsync(criteria: r => r.Price > 0,
+          includes: new[] { "Images" });
             var dtos = roomTypes.Select(rt => new RoomTypeDTO
             {
                 Id = rt.Id,
@@ -29,7 +31,14 @@ namespace Hotel_Management_System.Controllers
                 Occupancy = rt.Occupancy,
                 ImageUrl = rt.Images != null && rt.Images.Any()
                            ? rt.Images.First().ImageUrl
-                           : "https://via.placeholder.com/800x600?text=No+Image"
+                           : "https://via.placeholder.com/800x600?text=No+Image",
+                ImageUrls = rt.Images != null && rt.Images.Any()
+                ? rt.Images.Select(i => i.ImageUrl).ToList()
+                : new List<string> { "https://via.placeholder.com/800x600?text=No+Image" },
+                Features = !string.IsNullOrWhiteSpace(rt.RoomAmenities)
+               ? rt.RoomAmenities.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList()
+               : new List<string>()
+
             }).ToList();
             return View(dtos);
         }

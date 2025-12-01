@@ -40,5 +40,6 @@ namespace Data_Access_Layer.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? StripeCustomerId { get; set; }
         public List<Booking> Bookings { get; set; }
+
     }
 }

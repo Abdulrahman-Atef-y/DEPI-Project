@@ -14,5 +14,8 @@ namespace Hotel_Management_System.Models.DTOs
         public int Occupancy { get; set; }
         public string? ImageUrl { get; set; }
         public int HotelId { get; set; }
+        public List<string> ImageUrls { get; set; } = new List<string>();
+        public List<string> Features { get; set; } = new List<string>();
+
     }
 }

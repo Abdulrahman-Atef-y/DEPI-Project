@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Data_Access_Layer.Entities
 {
@@ -34,6 +35,11 @@ namespace Data_Access_Layer.Entities
         public Hotel Hotel { get; set; }
         public List<RoomImage> Images { get; set; }
         public List<Room> Rooms { get; set; }
+        public RoomType()
+        {
+            Images = new List<RoomImage>();
+            Rooms = new List<Room>();
+        }
     }
 }
 

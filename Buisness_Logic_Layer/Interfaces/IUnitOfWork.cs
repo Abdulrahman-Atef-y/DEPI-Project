@@ -12,6 +12,8 @@ namespace Buisness_Logic_Layer.Interfaces
         IBookingRepository BookingRepository { get; }
         IReviewRepository ReviewRepository { get; }
         IGuestRepository GuestRepository { get; }
+        IRoomImageRepository RoomImageRepository { get; }
+
 
         Task<int> SaveChangesAsync();
     }

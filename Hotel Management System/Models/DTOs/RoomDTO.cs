@@ -23,5 +23,7 @@ namespace Hotel_Management_System.Models.DTOs
         [Display(Name = "Room Type")]
         public int RoomTypeId { get; set; }
         public IEnumerable<SelectListItem>? RoomTypeList { get; set; }
+        public string? RoomTypeImageUrl { get; set; }
+
     }
 }

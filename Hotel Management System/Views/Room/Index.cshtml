@@ -15,6 +15,7 @@
     <table class="table" style="width: 100%; border-collapse: collapse;">
         <thead>
             <tr style="border-bottom: 2px solid #eee; text-align: right;">
+                <th style="padding: 15px;">صورة الغرفة</th>
                 <th style="padding: 15px;">رقم الغرفة</th>
                 <th style="padding: 15px;">الطابق</th>
                 <th style="padding: 15px;">الحالة</th>
@@ -25,6 +26,11 @@
             @foreach (var item in Model)
             {
                 <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 15px; width: 80px;">
+                        <img src="@(item.RoomTypeImageUrl ?? "/img/roomtypes/default-room.jpg")"
+                             alt="Room Type Image"
+                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;" />
+                    </td>
                     <td style="padding: 15px;">@item.RoomNumber</td>
                     <td style="padding: 15px;">@item.Floor</td>
                     <td style="padding: 15px;">

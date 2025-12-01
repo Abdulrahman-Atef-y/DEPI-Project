@@ -26,7 +26,9 @@ namespace Hotel_Management_System.Controllers
                 RoomNumber = r.RoomNumber,
                 Floor = r.Floor,
                 Status = r.Status,
-                RoomTypeId = r.RoomTypeId
+                RoomTypeId = r.RoomTypeId,
+                RoomTypeImageUrl = r.RoomType.Images.FirstOrDefault()?.ImageUrl
+
             }).ToList();
 
             return View(roomDtos);
