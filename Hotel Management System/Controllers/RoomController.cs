@@ -18,7 +18,7 @@ namespace Hotel_Management_System.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var rooms = await _unitOfWork.RoomRepository.FindAllAsync(criteria: null, includes: new[] { "RoomType" });
+            var rooms = await _unitOfWork.RoomRepository.FindAllAsync(criteria: null, includes: new[] { "RoomType", "RoomType.Images" });
 
             var roomDtos = rooms.Select(r => new RoomDTO
             {
@@ -27,7 +27,7 @@ namespace Hotel_Management_System.Controllers
                 Floor = r.Floor,
                 Status = r.Status,
                 RoomTypeId = r.RoomTypeId,
-                RoomTypeImageUrl = r.RoomType.Images.FirstOrDefault()?.ImageUrl
+                RoomTypeImageUrl = r.RoomType.Images.FirstOrDefault()?.ImageUrl ?? "/Default/placeholder-room.png"
 
             }).ToList();
 

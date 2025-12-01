@@ -14,31 +14,30 @@
 <div class="table-responsive" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
     <table class="table" style="width: 100%; border-collapse: collapse;">
         <thead>
-            <tr style="border-bottom: 2px solid #eee; text-align: right;">
-                <th style="padding: 15px;">صورة الغرفة</th>
-                <th style="padding: 15px;">رقم الغرفة</th>
-                <th style="padding: 15px;">الطابق</th>
-                <th style="padding: 15px;">الحالة</th>
-                <th style="padding: 15px;">الإجراءات</th>
+            <tr style="border-bottom: 2px solid #eee; text-align: center;">
+                <th style="padding: 10px; width: 90px;text-align:center; vertical-align: middle;">صورة الغرفة</th>
+                <th style="padding: 10px; width: 60px;text-align:center; vertical-align: middle;">رقم الغرفة</th>
+                <th style="padding: 10px; width: 60px;text-align:center; vertical-align: middle;">الطابق</th>
+                <th style="padding: 10px; width: 100px;text-align:center; vertical-align: middle;">الحالة</th>
+                <th style="padding: 10px; width: 120px;text-align:center; vertical-align: middle;">الإجراءات</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 15px; width: 80px;">
-                        <img src="@(item.RoomTypeImageUrl ?? "/img/roomtypes/default-room.jpg")"
-                             alt="Room Type Image"
-                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;" />
+                    <td style="padding: 10px; width: 90px; text-align:center;">
+                       <img src="@item.RoomTypeImageUrl"
+                        alt="Room Type Image" style="width: 400px; height: 200px; object-fit: cover; border-radius: 6px;" /> 
                     </td>
-                    <td style="padding: 15px;">@item.RoomNumber</td>
-                    <td style="padding: 15px;">@item.Floor</td>
-                    <td style="padding: 15px;">
+                    <td style="padding: 10px; width: 60px; text-align:center;">@item.RoomNumber</td>
+                    <td style="padding: 10px; width: 60px; text-align:center;">@item.Floor</td>
+                    <td style="padding: 10px;width: 100px; text-align:center;">
                         <span class="badge" style="padding: 5px 10px; border-radius: 15px; background: #e8f5e9; color: #2e7d32;">
                             @item.Status
                         </span>
                     </td>
-                    <td style="padding: 15px;">
+                    <td style="padding:10px; width: 120px; text-align:center;">
                         <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;"
                               onsubmit="return confirm('هل أنت متأكد من حذف هذه الغرفة؟');">
                             <button type="submit" class="btn btn-sm btn-danger" style="color:white; background:#e74c3c;">
