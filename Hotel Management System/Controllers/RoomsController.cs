@@ -18,7 +18,7 @@ namespace Hotel_Management_System.Controllers
         {
             ViewData["CurrentSort"] = sortOrder ?? "all";
             var roomTypes = await _unitOfWork.RoomTypeRepository.FindAllAsync(criteria: null, includes: new[] { "Images" });
-
+           
             switch (sortOrder)
             {
                 case "price_desc":
@@ -47,7 +47,10 @@ namespace Hotel_Management_System.Controllers
                 : new List<string> { "https://via.placeholder.com/800x600?text=No+Image" },
                 Features = !string.IsNullOrWhiteSpace(rt.RoomAmenities)
                ? rt.RoomAmenities.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList()
-               : new List<string>()
+               : new List<string>(),
+                Area=rt.Area,
+                Rating=4
+                
 
             }).ToList();
 
@@ -58,8 +61,11 @@ namespace Hotel_Management_System.Controllers
         {
             var roomType = await _unitOfWork.RoomTypeRepository.FindAsync(
         r => r.Id == id,
-        includes: new[] { "Images" }
-    );
+        includes: new[] { "Images" });
+
+            var reviews = await _unitOfWork.RoomTypeRepository
+                .GetRoomTypeReviewsAsync(id);
+    
             if (roomType == null) return NotFound();
 
             var dto = new RoomTypeDTO
@@ -77,7 +83,20 @@ namespace Hotel_Management_System.Controllers
                 : new List<string> { "https://via.placeholder.com/800x600?text=No+Image" },
                 Features = !string.IsNullOrWhiteSpace(roomType.RoomAmenities)
                ? roomType.RoomAmenities.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList()
-               : new List<string>()
+               : new List<string>(),
+                Area = roomType.Area,
+                
+                Rating = reviews.Any() ? (int)Math.Round(reviews.Average(r => r.Rating)) : 0,
+                
+                ReviewCount = reviews.Count,
+                Reviews = reviews.Select(r => new RoomReviewDTO
+                {
+                    
+                    GuestName = r.Booking.Guest.FirstName,
+                    Rating = r.Rating,
+                    Comment = r.Comment,
+                    Date = r.Date
+                }).ToList()
 
             };
 

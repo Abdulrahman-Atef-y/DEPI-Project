@@ -4,6 +4,7 @@ using Data_Access_Layer.Data;
 using Data_Access_Layer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace Hotel_Management_System
 {
@@ -12,6 +13,10 @@ namespace Hotel_Management_System
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            
+
+            
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -44,7 +49,8 @@ namespace Hotel_Management_System
                 {
                     var userManager = services.GetRequiredService<UserManager<Guest>>();
                     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                    await Data_Access_Layer.Utility.DbInitializer.Initialize(userManager, roleManager);
+                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    await Data_Access_Layer.Utility.DbInitializer.Initialize(userManager, roleManager, context);
                 }
                 catch (Exception ex)
                 {

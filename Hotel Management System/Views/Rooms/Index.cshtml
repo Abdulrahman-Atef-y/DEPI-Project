@@ -33,7 +33,18 @@
                     <h3 class="room-title">@room.Name</h3>
                     <p class="room-description">@room.Description</p>
                     <div class="room-features">
-                        <span><i class="fas fa-users"></i> @room.Occupancy أشخاص</span>
+                        <span>
+                            <i class="fas fa-users"></i>
+                            @room.Occupancy أشخاص
+                        </span>
+                        <span>
+                            <i class="fas fa-expand"></i>
+                            @room.Area م²
+                        </span>
+                        <span class="room-rating">
+                            <i class="fas fa-star"></i>
+                            @room.Rating
+                        </span>
                     </div>
                     <div class="room-actions">
                         <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id" class="btn-details">

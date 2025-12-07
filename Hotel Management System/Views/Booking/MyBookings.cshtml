@@ -21,31 +21,48 @@
     {
             @foreach (var item in Model)
             {
-            <div class="card mb-3 shadow-sm" p-3" style="border-radius:14px;">
-                        <div class="row align-items-center">
-                            <div class="col-md-4">
-                                <h5>رقم الغرفة: @item.Room.RoomNumber</h5>
-                                <span class="badge badge-success">@item.Status</span>
-                            </div>
-                            <div class="col-md-4">
-                        <p class="mb-1"><strong>دخول:</strong> @item.CheckInDate.ToShortDateString()</p>
-                        <p class="mb-1"><strong>خروج:</strong> @item.CheckOutDate.ToShortDateString()</p>
-                            </div>
-                    <div class="col-md-4 text-end">
-                        <h4 class= "text-primary">@item.TotalPrice.ToString("C")</h4>
-                            </div>
-                            <div class="col-md-3 text-right">
-                                <form asp-action="Delete" asp-route-id="@item.Id" method="post"
-                                      onsubmit="return confirm('هل أنت متأكد من إلغاء هذا الحجز؟');">
-                            @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-danger btn-sm mt-2">
-                                        <i class="fas fa-times"></i> إلغاء الحجز
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div class="booking-info">
+                        <h4>@item.Room.RoomType.Name</h4>
+                        <span class="booking-number">@item.Id</span>
                     </div>
+                    <span class="booking-status confirmed">مؤكد</span>
+                </div>
+                <div class="booking-details">
+                    <div class="detail-item">
+                        <i class="fas fa-user"></i>
+                        <span>@item.Guest.FirstName</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-users"></i>
+                        <span>@item.Room.RoomType.Occupancy</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>@item.CheckInDate - @item.CheckOutDate</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-moon"></i>
+                        <span>@item.CheckInDate - @item.CheckOutDate ليالي</span>
+                    </div>
+                </div>
+                <div class="booking-footer">
+                    <div class="booking-total">
+                        <span>المجموع:</span>
+                        <strong>@item.TotalPrice</strong>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="btn-secondary" >
+                            <i class="fas fa-eye"></i>
+                            التفاصيل
+                        </button>
+                    </div>
+                </div>
+            </div>
             }
     }
 </div>
 <link rel="stylesheet" href="~/css/admin-roomtype.css" />
+
+

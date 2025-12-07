@@ -24,14 +24,18 @@ namespace Hotel_Management_System.Controllers
             var roomType = await _unitOfWork.RoomTypeRepository.GetByIdAsync(roomTypeId);
             if (roomType == null) return NotFound();
 
+
             var dto = new BookingDTO
             {
                 RoomTypeId = roomType.Id,
                 RoomTypeName = roomType.Name,
                 PricePerNight = roomType.Price,
                 CheckInDate = DateTime.Today,
-                CheckOutDate = DateTime.Today.AddDays(1)
+                CheckOutDate = DateTime.Today.AddDays(1),
+
             };
+
+
 
             return View(dto);
         }
@@ -91,7 +95,7 @@ namespace Hotel_Management_System.Controllers
             var user = await _userManager.GetUserAsync(User);
             var allBookings = await _unitOfWork.BookingRepository.FindAllAsync(
                 criteria: b => b.GuestId == user.Id,
-                includes: new[] { "Room" }
+                includes: new[] { "Room", "Room.RoomType", "Guest" } // include nested RoomType
             );
 
             return View(allBookings.OrderByDescending(b => b.Date));
