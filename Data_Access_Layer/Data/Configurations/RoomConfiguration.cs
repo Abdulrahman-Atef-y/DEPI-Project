@@ -18,7 +18,7 @@ namespace Data_Access_Layer.Data.Configurations
             builder.HasMany(r => r.Bookings)
                 .WithOne(b => b.Room)
                 .HasForeignKey(b => b.RoomId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hotel_Management_System.Models.DTOs
 {
@@ -18,5 +19,8 @@ namespace Hotel_Management_System.Models.DTOs
         [Required(ErrorMessage = "يجب إضافة صورة واحدة على الأقل.")]
         public IFormFile[] RoomImages { get; set; }
         public int Area { get; set; }
+        [Display(Name = "وسائل الراحة")]
+        public List<string> Amenities { get; set; } = new List<string>();
+        public List<SelectListItem> AvailableAmenities { get; set; } = new List<SelectListItem>();
     }
 }

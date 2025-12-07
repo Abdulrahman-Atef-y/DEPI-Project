@@ -3,22 +3,25 @@
     ViewData["Title"] = "إدارة أنواع الغرف";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<link rel="stylesheet" href="~/css/admin-room.css" asp-append-version="true" />
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="admin-index-root">
+    <div class="admin-header">
     <h2>إدارة أنواع الغرف</h2>
-    <a asp-action="Create" class="btn-primary" style="text-decoration:none;">
+        <a asp-action="Create" class="admin-create-btn">
         <i class="fas fa-plus"></i> إضافة نوع جديد
     </a>
 </div>
 
-<div class="table-responsive" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <table class="table" style="width: 100%; border-collapse: collapse;">
+    <div class="admin-table-wrapper">
+        <div class="admin-table-container">
+            <table class="table admin-table">
         <thead>
             <tr>
                 <th>الاسم</th>
                 <th>السعر</th>
                 <th>السعة</th>
-                <th class="text-center">الإجراءات</th>
+                <th>الإجراءات</th>
             </tr>
         </thead>
         <tbody>
@@ -28,17 +31,21 @@
                     <td>@item.Name</td>
                     <td>@item.Price.ToString("C")</td>
                     <td>@item.Occupancy</td>
-                    <td class="text-center">
+                    <td>
+                       <div class="admin-action-group">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="admin-action-btn admin-edit">
+                                <i class="fas fa-edit"></i> تعديل
+                            </a>
                         <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;"
                               onsubmit="return confirm('هل أنت متأكد؟');">
-                            <button type="submit" class="btn btn-link p-0" style="color: #e74c3c;">
+                           <button type="submit" class="admin-action-btn admin-delete">
                                 <i class="fas fa-trash"></i> حذف
                             </button>
                         </form>
+                        </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
-<link rel="stylesheet" href="~/css/admin-roomtype.css" />

@@ -15,7 +15,13 @@ namespace Hotel_Management_System.Models.DTOs
         public string? ImageUrl { get; set; }
         public int HotelId { get; set; }
         public List<string> ImageUrls { get; set; } = new List<string>();
-        public List<string> Features { get; set; } = new List<string>();
+        public List<string> AmenitiesList { get; set; } = new List<string>();
+        [Display(Name = "وسائل الراحة")]
+        public string Amenities
+        {
+            get => string.Join(", ", AmenitiesList);
+            set => AmenitiesList = value?.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>();
+        }
 
     }
 }

@@ -18,12 +18,12 @@
             <span class="price"><i class="fas fa-dollar-sign"></i> @Model.Price.ToString("C") / ليلة</span>
         </div>
 
-        @if (Model.Features != null && Model.Features.Any())
+        @if (Model.AmenitiesList != null && Model.AmenitiesList.Any())
         {
             <div class="room-features">
                 <h3>المميزات</h3>
                 <div class="features-grid">
-                    @foreach (var feature in Model.Features)
+                    @foreach (var feature in Model.AmenitiesList)
                     {
                         <div class="feature-item">@feature</div>
                     }

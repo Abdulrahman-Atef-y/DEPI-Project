@@ -19,5 +19,7 @@ namespace Hotel_Management_System.Models.DTOs
         public DateTime CheckOutDate { get; set; } = DateTime.Today.AddDays(1);
         [DataType(DataType.Currency)]
         public decimal TotalPrice { get; set; }
+        public List<string>? ImageUrls { get; set; } = new List<string>();
+        public List<string> Amenities { get; set; } = new List<string>();
     }
 }

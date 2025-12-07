@@ -3,44 +3,51 @@
     ViewData["Title"] = "إدارة الغرف";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<link rel="stylesheet" href="~/css/admin-room.css" asp-append-version="true" />
 
-<div class="d-flex justify-content-between align-items-center mb-4" style="display:flex; justify-content:space-between;">
-    <h2>إدارة الغرف</h2>
-    <a asp-action="Create" class="btn-primary" style="text-decoration:none;">
+<div class="admin-index-root">
+<div class="admin-header">
+    <h2 class="admin-title">إدارة الغرف</h2>
+    <a asp-action="Create" class="admin-create-btn">
         <i class="fas fa-plus"></i> إضافة غرفة جديدة
     </a>
 </div>
-
-<div class="table-responsive" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <table class="table" style="width: 100%; border-collapse: collapse;">
+<div class="admin-table-wrapper">
+<div class="admin-table-container">
+    <table class="table admin-table">
         <thead>
-            <tr style="border-bottom: 2px solid #eee; text-align: center;">
-                <th style="padding: 10px; width: 90px;text-align:center; vertical-align: middle;">صورة الغرفة</th>
-                <th style="padding: 10px; width: 60px;text-align:center; vertical-align: middle;">رقم الغرفة</th>
-                <th style="padding: 10px; width: 60px;text-align:center; vertical-align: middle;">الطابق</th>
-                <th style="padding: 10px; width: 100px;text-align:center; vertical-align: middle;">الحالة</th>
-                <th style="padding: 10px; width: 120px;text-align:center; vertical-align: middle;">الإجراءات</th>
+            <tr>
+                <th>اسم النوع</th>
+                <th>صورة الغرفة</th>
+                <th >رقم الغرفة</th>
+                <th >الطابق</th>
+                <th >الحالة</th>
+                <th >الإجراءات</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 10px; width: 90px; text-align:center;">
-                       <img src="@item.RoomTypeImageUrl"
-                        alt="Room Type Image" style="width: 400px; height: 200px; object-fit: cover; border-radius: 6px;" /> 
+                <tr >
+                    <td>@item.RoomTypeName</td>
+                    <td>
+                        <img src="@item.RoomTypeImageUrl" class="admin-img"
+                        alt="Room Type Image" /> 
                     </td>
-                    <td style="padding: 10px; width: 60px; text-align:center;">@item.RoomNumber</td>
-                    <td style="padding: 10px; width: 60px; text-align:center;">@item.Floor</td>
-                    <td style="padding: 10px;width: 100px; text-align:center;">
-                        <span class="badge" style="padding: 5px 10px; border-radius: 15px; background: #e8f5e9; color: #2e7d32;">
+                    <td>@item.RoomNumber</td>
+                    <td>@item.Floor</td>
+                    <td >
+                        <span class="status-badge" >
                             @item.Status
                         </span>
                     </td>
-                    <td style="padding:10px; width: 120px; text-align:center;">
-                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;"
-                              onsubmit="return confirm('هل أنت متأكد من حذف هذه الغرفة؟');">
-                            <button type="submit" class="btn btn-sm btn-danger" style="color:white; background:#e74c3c;">
+                      <td class="admin-action-group">
+                          <a asp-action="Edit" asp-route-id="@item.Id" class="admin-action-btn admin-edit">
+                                تعديل
+                          </a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post"
+                          onsubmit="return confirm('هل أنت متأكد من حذف هذه الغرفة؟');" style="display:inline;">
+                            <button type="submit" class="admin-action-btn admin-delete">
                                 حذف
                             </button>
                         </form>
@@ -49,4 +56,5 @@
             }
         </tbody>
     </table>
+</div>
 </div>

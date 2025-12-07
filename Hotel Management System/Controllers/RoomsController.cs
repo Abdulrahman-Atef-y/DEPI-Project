@@ -45,7 +45,7 @@ namespace Hotel_Management_System.Controllers
                 ImageUrls = rt.Images != null && rt.Images.Any()
                 ? rt.Images.Select(i => i.ImageUrl).ToList()
                 : new List<string> { "https://via.placeholder.com/800x600?text=No+Image" },
-                Features = !string.IsNullOrWhiteSpace(rt.RoomAmenities)
+                AmenitiesList = !string.IsNullOrWhiteSpace(rt.RoomAmenities)
                ? rt.RoomAmenities.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList()
                : new List<string>()
 
@@ -75,7 +75,7 @@ namespace Hotel_Management_System.Controllers
                             ImageUrls = roomType.Images != null && roomType.Images.Any()
                 ? roomType.Images.Select(i => i.ImageUrl).ToList()
                 : new List<string> { "https://via.placeholder.com/800x600?text=No+Image" },
-                Features = !string.IsNullOrWhiteSpace(roomType.RoomAmenities)
+                AmenitiesList = !string.IsNullOrWhiteSpace(roomType.RoomAmenities)
                ? roomType.RoomAmenities.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList()
                : new List<string>()
 

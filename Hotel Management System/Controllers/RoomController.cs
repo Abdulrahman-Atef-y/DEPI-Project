@@ -27,6 +27,7 @@ namespace Hotel_Management_System.Controllers
                 Floor = r.Floor,
                 Status = r.Status,
                 RoomTypeId = r.RoomTypeId,
+                RoomTypeName = r.RoomType.Name,
                 RoomTypeImageUrl = r.RoomType.Images.FirstOrDefault()?.ImageUrl ?? "/Default/placeholder-room.png"
 
             }).ToList();
@@ -96,6 +97,59 @@ namespace Hotel_Management_System.Controllers
             await _unitOfWork.RoomRepository.DeleteAsync(room);
             TempData["SuccessMessage"] = "تم حذف الغرفة بنجاح!";
             return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Edit(int id)
+        {
+            var room = await _unitOfWork.RoomRepository.GetByIdAsync(id);
+            if (room == null) return NotFound();
+
+            var roomTypes = await _unitOfWork.RoomTypeRepository.GetAllAsync();
+
+            var dto = new RoomDTO
+            {
+                Id = room.Id,
+                RoomNumber = room.RoomNumber,
+                Floor = room.Floor,
+                Status = room.Status,
+                RoomTypeId = room.RoomTypeId,
+                RoomTypeList = roomTypes.Select(rt => new SelectListItem
+                {
+                    Text = rt.Name,
+                    Value = rt.Id.ToString()
+                })
+            };
+
+            return View(dto);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(RoomDTO roomDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var room = await _unitOfWork.RoomRepository.GetByIdAsync(roomDto.Id);
+                if (room == null) return NotFound();
+
+                room.RoomNumber = roomDto.RoomNumber;
+                room.Floor = roomDto.Floor;
+                room.Status = roomDto.Status;
+                room.RoomTypeId = roomDto.RoomTypeId;
+
+                await _unitOfWork.RoomRepository.UpdateAsync(room);
+                await _unitOfWork.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "تم تحديث بيانات الغرفة بنجاح!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var roomTypes = await _unitOfWork.RoomTypeRepository.GetAllAsync();
+            roomDto.RoomTypeList = roomTypes.Select(rt => new SelectListItem
+            {
+                Text = rt.Name,
+                Value = rt.Id.ToString()
+            });
+
+            return View(roomDto);
         }
     }
 }

@@ -30,7 +30,13 @@ namespace Hotel_Management_System.Controllers
                 RoomTypeName = roomType.Name,
                 PricePerNight = roomType.Price,
                 CheckInDate = DateTime.Today,
-                CheckOutDate = DateTime.Today.AddDays(1)
+                CheckOutDate = DateTime.Today.AddDays(1),
+                ImageUrls = roomType.Images != null && roomType.Images.Any()
+                ? roomType.Images.Select(i => i.ImageUrl).ToList()
+                : new List<string> { "https://via.placeholder.com/800x600?text=No+Image" },
+                Amenities = string.IsNullOrEmpty(roomType.RoomAmenities)
+                    ? new List<string>()
+                    : roomType.RoomAmenities.Split(", ", StringSplitOptions.RemoveEmptyEntries).ToList()
             };
 
             return View(dto);
@@ -80,7 +86,7 @@ namespace Hotel_Management_System.Controllers
             };
 
             await _unitOfWork.BookingRepository.AddAsync(booking);
-            await _unitOfWork.SaveChangesAsync(); // Save to DB
+            await _unitOfWork.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Booking confirmed successfully!";
             return RedirectToAction(nameof(MyBookings));
