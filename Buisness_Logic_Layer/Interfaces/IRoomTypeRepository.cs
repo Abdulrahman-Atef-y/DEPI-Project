@@ -9,5 +9,6 @@ namespace Buisness_Logic_Layer.Interfaces
 {
     public interface IRoomTypeRepository: IGenericRepository<RoomType>
     {
+        Task<List<Review>> GetRoomTypeReviewsAsync(int roomTypeId);
     }
 }

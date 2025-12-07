@@ -1,4 +1,5 @@
-﻿using Data_Access_Layer.Entities;
+﻿using Data_Access_Layer.Data;
+using Data_Access_Layer.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,28 @@ namespace Data_Access_Layer.Utility
     {
         public static async Task Initialize(
             UserManager<Guest> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
+            var hotel = new Hotel
+            {
+                Name = "Grand Azure Hotel",
+                Description = "A comfortable modern hotel offering excellent service and central location.",
+                Policies = "Check-in 3:00 PM, Check-out 11:00 AM. No smoking. Pets allowed on request.",
+                Address = "123 Main Street",
+                City = "YourCity",
+                Country = "YourCountry",
+                Phone = "+1-555-0100",
+                Stars = 4,
+                HotelImages = new System.Collections.Generic.List<HotelImage>(),
+                RoomTypes = new System.Collections.Generic.List<RoomType>(),
+                Reviews = new System.Collections.Generic.List<Review>()
+            };
+
+            await context.Hotels.AddAsync(hotel);
+            await context.SaveChangesAsync();
+
+
+
             if (!await roleManager.RoleExistsAsync("Admin"))
             {
                 await roleManager.CreateAsync(new IdentityRole("Admin"));

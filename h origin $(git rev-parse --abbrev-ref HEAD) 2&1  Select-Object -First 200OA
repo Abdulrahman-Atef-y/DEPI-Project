@@ -1,0 +1,37 @@
+[33mcommit 9fcb62e24b1fa0bcc7b9758facd24420c45d1504[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: Abdelrahman Atef <3obade2004@gmail.com>
+Date:   Sun Dec 7 04:32:43 2025 +0200
+
+    improve the functionality and the ui/ux of the booking/create and booking/my bookings and the rooms display
+
+ Buisness_Logic_Layer/Buisness_Logic_Layer.csproj   |   4 [32m+[m
+ .../Interfaces/IRoomTypeRepository.cs              |   1 [32m+[m
+ .../Repositories/RoomTypeRepository.cs             |  19 [32m+[m
+ Data_Access_Layer/Data/ApplicationDbContext.cs     |   2 [32m+[m
+ Data_Access_Layer/Entities/Payment.cs              |  18 [32m+[m
+ .../Migrations/20251205131501_axa.Designer.cs      | 661 [32m++++++++++++++++++++[m
+ Data_Access_Layer/Migrations/20251205131501_axa.cs |  42 [32m++[m
+ .../Migrations/20251206130929_payment.Designer.cs  | 691 [32m+++++++++++++++++++++[m
+ .../Migrations/20251206130929_payment.cs           |  39 [32m++[m
+ .../ApplicationDbContextModelSnapshot.cs           |  32 [32m+[m[31m-[m
+ Data_Access_Layer/Utility/DbInitializer.cs         |  25 [32m+[m[31m-[m
+ .../Controllers/BookingController.cs               |   8 [32m+[m[31m-[m
+ .../Controllers/RoomTypeController.cs              |   6 [32m+[m[31m-[m
+ .../Controllers/RoomsController.cs                 |  29 [32m+[m[31m-[m
+ .../Hotel Management System.csproj                 |   1 [32m+[m
+ Hotel Management System/Models/DTOs/BookingDTO.cs  |   2 [32m+[m
+ .../Models/DTOs/RoomReviewsDTO.cs                  |  10 [32m+[m
+ Hotel Management System/Models/DTOs/RoomTypeDTO.cs |  11 [32m+[m
+ Hotel Management System/Program.cs                 |   8 [32m+[m[31m-[m
+ Hotel Management System/Views/Account/Login.cshtml |   6 [32m+[m[31m-[m
+ .../Views/Account/Register.cshtml                  |   2 [32m+[m[31m-[m
+ .../Views/Booking/Create.cshtml                    | 215 [32m+++++[m[31m--[m
+ .../Views/Booking/MyBookings.cshtml                |  63 [32m+[m[31m-[m
+ Hotel Management System/Views/Home/Index.cshtml    |  73 [32m++[m[31m-[m
+ Hotel Management System/Views/Rooms/Details.cshtml | 190 [32m++++[m[31m--[m
+ Hotel Management System/Views/Rooms/Index.cshtml   |  13 [32m+[m[31m-[m
+ Hotel Management System/appsettings.json           |   7 [32m+[m[31m-[m
+ Hotel Management System/wwwroot/css/site.css       |   3 [32m+[m
+ .../c16d3adf-9663-463e-9f5f-da3b3fcf526b.jpg       | Bin [31m0[m -> [32m7070[m bytes
+ .../f9f9fd91-197b-433a-8016-46d80802b5ed.jpg       | Bin [31m0[m -> [32m7070[m bytes
+ 30 files changed, 2059 insertions(+), 122 deletions(-)
