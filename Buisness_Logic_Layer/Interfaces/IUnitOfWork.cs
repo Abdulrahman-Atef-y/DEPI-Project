@@ -14,6 +14,11 @@ namespace Buisness_Logic_Layer.Interfaces
         IGuestRepository GuestRepository { get; }
         IRoomImageRepository RoomImageRepository { get; }
 
+        
+
+        
+
+
 
         Task<int> SaveChangesAsync();
     }

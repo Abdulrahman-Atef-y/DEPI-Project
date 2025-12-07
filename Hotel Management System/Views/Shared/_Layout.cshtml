@@ -43,15 +43,15 @@
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    
+
                     var currentUser = await UserManager.GetUserAsync(User);
-                     string initials = "";
-                     if (currentUser != null)
-                     {
-                     if (!string.IsNullOrEmpty(currentUser.FirstName)) initials += currentUser.FirstName[0];
-                     if (!string.IsNullOrEmpty(currentUser.LastName)) initials += currentUser.LastName[0];
-                     }
-                       initials = initials.ToUpper();
+                    string initials = "";
+                    if (currentUser != null)
+                    {
+                        if (!string.IsNullOrEmpty(currentUser.FirstName)) initials += currentUser.FirstName[0];
+                        if (!string.IsNullOrEmpty(currentUser.LastName)) initials += currentUser.LastName[0];
+                    }
+                    initials = initials.ToUpper();
                     <li class="nav-item">
                         <a asp-controller="Booking" asp-action="MyBookings" class="nav-link">حجوزاتي</a>
                     </li>
@@ -62,14 +62,14 @@
                             </div>
                             <span>@($"{currentUser?.FirstName} {currentUser?.LastName}")</span>
                             <div class="user-dropdown">
-                            <div class="user-dropdown">
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <a asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a>
-                                }
-                                <a asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                                <div class="user-dropdown">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a>
+                                    }
+                                    <a asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </li>
                 }
@@ -98,53 +98,53 @@
         </div>
     </nav>
     <div class="wrapper">
-    <main role="main">
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="notification notification-success">
-                <i class="fas fa-check-circle"></i>
-                <span>@TempData["SuccessMessage"]</span>
-            </div>
-        }
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="notification notification-error">
-                <i class="fas fa-exclamation-circle"></i>
-                <span>@TempData["ErrorMessage"]</span>
-            </div>
-        }
-
-        @RenderBody()
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>تواصل معنا</h3>
-                    <div class="contact-info">
-                        <p><i class="fas fa-envelope"></i> info@grandhotel.com</p>
-                        <p><i class="fas fa-phone"></i> +20 123 456 7890</p>
-                        <p><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</p>
-                    </div>
+        <main role="main">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="notification notification-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>@TempData["SuccessMessage"]</span>
                 </div>
-                <div class="footer-section">
-                    <h3>روابط سريعة</h3>
-                    <ul class="footer-links">
-                        <li><a asp-controller="Home" asp-action="Index">الرئيسية</a></li>
-                        <li><a asp-controller="Rooms" asp-action="Index">الغرف</a></li>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="notification notification-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>@TempData["ErrorMessage"]</span>
+                </div>
+            }
+
+            @RenderBody()
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>تواصل معنا</h3>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope"></i> info@grandhotel.com</p>
+                            <p><i class="fas fa-phone"></i> +20 123 456 7890</p>
+                            <p><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</p>
+                        </div>
+                    </div>
+                    <div class="footer-section">
+                        <h3>روابط سريعة</h3>
+                        <ul class="footer-links">
+                            <li><a asp-controller="Home" asp-action="Index">الرئيسية</a></li>
+                            <li><a asp-controller="Rooms" asp-action="Index">الغرف</a></li>
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li><a asp-controller="Booking" asp-action="MyBookings">حجوزاتي</a></li>
                             }
-                    </ul>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; @DateTime.Now.Year جراند هوتيل. جميع الحقوق محفوظة.</p>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; @DateTime.Now.Year جراند هوتيل. جميع الحقوق محفوظة.</p>
-            </div>
-        </div>
-    </footer>
+        </footer>
     </div>
     <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

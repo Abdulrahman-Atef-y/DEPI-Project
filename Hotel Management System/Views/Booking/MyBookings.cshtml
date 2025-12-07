@@ -1,6 +1,9 @@
-﻿@model IEnumerable<Data_Access_Layer.Entities.Booking>
+﻿@using System.Globalization
+@model IEnumerable<Data_Access_Layer.Entities.Booking>
 @{
     ViewData["Title"] = "حجوزاتي";
+
+    var arCulture = new CultureInfo("ar-EG");
 }
 
 <div class="container mt-5" style="padding-top: 120px;">
@@ -19,20 +22,22 @@
     }
     else
     {
-            @foreach (var item in Model)
-            {
+        @foreach (var item in Model)
+        {
+            var nights = (item.CheckOutDate - item.CheckInDate).Days;
+
             <div class="booking-card">
                 <div class="booking-header">
-                    <div class="booking-info">
+                    <div class="booking-info" style="display:flex">
                         <h4>@item.Room.RoomType.Name</h4>
-                        <span class="booking-number">@item.Id</span>
+                        <span class="booking-number">BK_@item.Id</span>
                     </div>
                     <span class="booking-status confirmed">مؤكد</span>
                 </div>
                 <div class="booking-details">
                     <div class="detail-item">
                         <i class="fas fa-user"></i>
-                        <span>@item.Guest.FirstName</span>
+                        <span>@item.Guest.FirstName @item.Guest.LastName</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-users"></i>
@@ -40,29 +45,28 @@
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-calendar-day"></i>
-                        <span>@item.CheckInDate - @item.CheckOutDate</span>
+                        <span>@item.CheckInDate.ToString("dd MMMM yyyy", arCulture) - @item.CheckOutDate.ToString("dd MMMM yyyy", arCulture)</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-moon"></i>
-                        <span>@item.CheckInDate - @item.CheckOutDate ليالي</span>
+                        <span>@nights ليالي</span>
                     </div>
                 </div>
                 <div class="booking-footer">
                     <div class="booking-total">
                         <span>المجموع:</span>
-                        <strong>@item.TotalPrice</strong>
+                        <strong class="text-dark fs-5" >@item.TotalPrice.ToString("N0", arCulture) ج.م.</strong>
                     </div>
                     <div class="booking-actions">
-                        <button class="btn-secondary" >
+                        <a class="btn-secondary" asp-controller="Booking" asp-action="BookingDetails" asp-route-id="@item.Id">
                             <i class="fas fa-eye"></i>
                             التفاصيل
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
-            }
+        }
     }
 </div>
 <link rel="stylesheet" href="~/css/admin-roomtype.css" />
-
 

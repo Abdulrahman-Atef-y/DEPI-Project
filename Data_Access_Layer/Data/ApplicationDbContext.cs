@@ -28,11 +28,16 @@ namespace Data_Access_Layer.Data
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<BookingGuest> BookingGuests { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+
         }
     }
 }

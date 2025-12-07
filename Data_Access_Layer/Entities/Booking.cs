@@ -44,5 +44,9 @@ namespace Data_Access_Layer.Entities
         public string? CancellationPolicy { get; set; }
         public string? StripePaymentIntentId { get; set; }
         public List<Review> Reviews { get; set; }
+
+        public ICollection<BookingGuest> BookingGuests { get; set; }
+
+
     }
 }
