@@ -31,9 +31,6 @@ namespace Hotel_Management_System.Controllers
                 PricePerNight = roomType.Price,
                 CheckInDate = DateTime.Today,
                 CheckOutDate = DateTime.Today.AddDays(1),
-                ImageUrls = roomType.Images != null && roomType.Images.Any()
-                ? roomType.Images.Select(i => i.ImageUrl).ToList()
-                : new List<string> { "https://via.placeholder.com/800x600?text=No+Image" },
                 Amenities = string.IsNullOrEmpty(roomType.RoomAmenities)
                     ? new List<string>()
                     : roomType.RoomAmenities.Split(", ", StringSplitOptions.RemoveEmptyEntries).ToList()
