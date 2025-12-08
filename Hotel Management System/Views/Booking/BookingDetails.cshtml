@@ -1,0 +1,524 @@
+﻿@using System.Globalization
+@model Hotel_Management_System.Models.DTOs.BookingDTO
+
+@{
+    ViewData["Title"] = $"تفاصيل الحجز #{Model.BookingId}";
+
+    // 1. Setup Arabic Culture (Egyptian)
+    var arCulture = new CultureInfo("ar-EG");
+
+    // 2. Calculations
+    var nights = (Model.CheckOutDate - Model.CheckInDate).Days;
+    var subTotal = Model.PricePerNight * nights;
+    var taxAmount = subTotal * 0.05;
+    var finalTotal = subTotal + taxAmount;
+}
+
+<style>
+    /* --- 1. Variables & Theme --- */
+    /* Changed from :root to .bk-section
+           so these colors only affect this specific invoice section
+        */
+    .bk-section {
+        /* Palette: Luxury Hotel (Navy & Gold) */
+        --primary-color: #1a2b48; /* Deep Navy Blue */
+        --accent-color: #1a2b48; /* Gold for highlights */
+        /* Text Colors */
+        --text-dark: #1a1a1a;
+        --text-muted: #666666;
+        /* Backgrounds */
+        --bg-light: #f9f9f9;
+        --card-bg: #ffffff;
+        /* Status Colors */
+        --border-color: #e0e0e0;
+        --success-color: #2e7d32;
+        --success-bg: #e8f5e9;
+        /* Typography */
+        --font-main: 'Cairo', sans-serif;
+        /* Layout settings */
+        font-family: var(--font-main);
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        direction: rtl;
+        padding: 140px 0;
+        line-height: 1.6;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .bk-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* --- 2. Layout Grid --- */
+    .bk-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
+        margin-top: 24px;
+    }
+
+    @@media (max-width: 992px) {
+        .bk-layout
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    /* --- 3. Header --- */
+    .bk-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .bk-page-title h2 {
+        font-weight: 800;
+        margin: 0 0 5px 0;
+        color: var(--primary-color);
+        font-size: 1.75rem;
+    }
+
+    .bk-ref-label {
+        color: var(--text-muted);
+        margin: 0;
+    }
+
+    .bk-ref-val {
+        font-family: monospace;
+        color: var(--accent-color); /* Gold ID */
+        font-weight: bold;
+        background: #fff8e1;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .bk-btn-print {
+        background-color: white;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: 600;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .bk-btn-print:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+    /* --- 4. Cards --- */
+    .bk-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+        border: 1px solid var(--border-color);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .bk-card-title {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin: 0 0 20px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.15rem;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 12px;
+    }
+
+        .bk-card-title i {
+            color: var(--accent-color); /* Gold Icons */
+        }
+
+    /* --- 5. Contact Grid --- */
+    .bk-contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    @@media (max-width: 768px) {
+        .bk-contact-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    .bk-info-box {
+        display: flex;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+
+        .bk-info-box i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-left: 16px;
+        }
+
+    .bk-label {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+    }
+
+    /* .bk-value {
+        font-weight: 700;
+        color: var(--text-dark);
+    } */
+
+    /* --- 6. Guest List --- */
+    .bk-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .bk-badge-pill {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+    }
+
+    .bk-guest-item {
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 12px;
+        background: #fff;
+        border-right: 4px solid var(--accent-color); /* Gold accent */
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .bk-guest-icon {
+        width: 45px;
+        height: 45px;
+        background: #f0f4f8;
+        color: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .bk-guest-info {
+        flex-grow: 1;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .bk-guest-col {
+        flex: 1 1 140px;
+    }
+
+    .bk-badge-main {
+        background-color: var(--success-bg);
+        color: var(--success-color);
+        border: 1px solid #c8e6c9;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .bk-badge-sub {
+        background-color: #f5f5f5;
+        color: var(--text-muted);
+        border: 1px solid #e0e0e0;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+    }
+
+    /* --- 7. Right Column (Summary) --- */
+    .bk-sticky {
+        position: sticky;
+        top: 20px;
+        z-index: 10;
+    }
+
+    .bk-room-alert {
+        background-color: #e3f2fd;
+        color: var(--primary-color);
+        border: 1px solid #bbdefb;
+        padding: 16px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .bk-date-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+
+    .bk-date-item {
+        background-color: #fff;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .bk-price-row {
+        display: flex;
+        justify-content: space-between;
+        color: var(--text-muted);
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+
+    .bk-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 2px dashed #e0e0e0;
+        padding-top: 16px;
+        margin-top: 16px;
+        font-size: 1.25rem;
+        color: var(--primary-color);
+        font-weight: 800;
+    }
+
+    .bk-paid-status {
+        color: var(--success-color);
+        font-size: 0.9rem;
+        text-align: center;
+        margin-top: 12px;
+        background: var(--success-bg);
+        padding: 8px;
+        border-radius: 6px;
+    }
+
+    .bk-btn-download {
+        display: block;
+        width: 100%;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        margin-top: 24px;
+        font-size: 1rem;
+        transition: background 0.2s;
+    }
+
+        .bk-btn-download:hover {
+            background-color: #2c4a7c;
+        }
+
+    /* --- Print Styles --- */
+    @@media print {
+        .bk-no-print, nav, footer, header
+
+    {
+        display: none !important;
+    }
+
+    .bk-btn-print {
+        display: none;
+    }
+
+    body {
+        background: white;
+    }
+
+    .bk-card {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+    }
+
+    .bk-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .bk-layout {
+        display: block;
+    }
+
+    .bk-col-right {
+        margin-top: 20px;
+        page-break-inside: avoid;
+    }
+
+    }
+</style>
+<section class="bk-section">
+    <div class="bk-container">
+
+        <div class="bk-header">
+            <div class="bk-page-title">
+                <h2>تفاصيل الحجز</h2>
+                <p class="bk-ref-label">رقم الحجز: <span class="bk-ref-val">#BK-@Model.BookingId</span></p>
+            </div>
+            <button onclick="window.print()" class="bk-btn-print bk-no-print">
+                <i class="fas fa-print"></i> طباعة / حفظ PDF
+            </button>
+        </div>
+
+        <div class="bk-layout">
+
+            <div class="bk-col-left">
+
+                <div class="bk-card">
+                    <h4 class="bk-card-title">
+                        <i class="fas fa-address-card"></i> بيانات التواصل الرئيسية
+                    </h4>
+                    <div class="bk-contact-grid">
+                        <div class="bk-info-box">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <div class="bk-label">البريد الإلكتروني</div>
+                                <div class="bk-value">@Model.Email</div>
+                            </div>
+                        </div>
+                        <div class="bk-info-box">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <div class="bk-label">رقم الهاتف</div>
+                                <div class="bk-value">@(string.IsNullOrEmpty(Model.phonenumber) ? "غير متوفر" : Model.phonenumber)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bk-card">
+                    <div class="bk-card-header">
+                        <h4 class="bk-card-title" style="margin:0">
+                            <i class="fas fa-users"></i> قائمة الضيوف
+                        </h4>
+                        <span class="bk-badge-pill">@Model.NumberOfGuests ضيوف</span>
+                    </div>
+
+                    @if (Model.BookingGuests != null && Model.BookingGuests.Any())
+                    {
+                        for (int i = 0; i < Model.BookingGuests.Count; i++)
+                        {
+                            var guest = Model.BookingGuests[i];
+                            <div class="bk-guest-item">
+                                <div class="bk-guest-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="bk-guest-info">
+                                    <div class="bk-guest-col">
+                                        <div class="bk-label">الاسم الكامل</div>
+                                        <div class="bk-value">@guest.FirstName @guest.LastName</div>
+                                    </div>
+                                    <div class="bk-guest-col">
+                                        <div class="bk-label">رقم الهوية</div>
+                                        <div class="bk-value bk-ref-val" style="color:var(--text-dark)">@guest.SSN</div>
+                                    </div>
+                                    <div class="bk-guest-col" style="text-align: left;">
+                                        @if (i == 0)
+                                        {
+                                            <span class="bk-badge-main">الضيف الرئيسي</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="bk-badge-sub">مرافق</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p style="text-align:center; color:#999;">لا يوجد تفاصيل للضيوف</p>
+                    }
+                </div>
+            </div>
+
+            <div class="bk-col-right">
+                <div class="bk-card bk-sticky">
+                    <h4 class="bk-card-title">
+                        <i class="fas fa-receipt"></i> ملخص الحجز
+                    </h4>
+
+                    <div class="bk-room-alert">
+                        <i class="fas fa-bed fa-2x"></i>
+                        <div>
+                            <small style="display:block">نوع الغرفة</small>
+                            <strong>@Model.RoomTypeName</strong>
+                        </div>
+                    </div>
+
+                    <div class="bk-date-grid">
+                        <div class="bk-date-item">
+                            <small class="bk-label">الوصول</small>
+                            <strong style="color:var(--text-dark); display:block;">@Model.CheckInDate.ToString("dd MMMM", arCulture)</strong>
+                            <small class="bk-label">@Model.CheckInDate.Year</small>
+                        </div>
+                        <div class="bk-date-item">
+                            <small class="bk-label">المغادرة</small>
+                            <strong style="color:var(--text-dark); display:block;">@Model.CheckOutDate.ToString("dd MMMM", arCulture)</strong>
+                            <small class="bk-label">@Model.CheckOutDate.Year</small>
+                        </div>
+                    </div>
+
+                    <div class="bk-price-summary" style="margin-top: 24px;">
+                        <div class="bk-price-row">
+                            <span><i class="fas fa-moon" style="margin-left:5px"></i> السعر (@nights ليالي × @Model.PricePerNight.ToString("N0") ج.م.)</span>
+                            <span>@subTotal.ToString("N2") ج.م.</span>
+                        </div>
+                        <div class="bk-price-row">
+                            <span><i class="fas fa-percentage" style="margin-left:5px"></i> ضريبة (5%)</span>
+                            <span>@taxAmount.ToString("N2") ج.م.</span>
+                        </div>
+
+                        <div class="bk-total-row">
+                            <span>المجموع الكلي</span>
+                            <span>@finalTotal.ToString("N2") ج.م.</span>
+                        </div>
+                        <div class="bk-paid-status">
+                            <i class="fas fa-check-circle"></i> تم الدفع بالكامل
+                        </div>
+                    </div>
+
+                    <button class="bk-btn-download bk-no-print">تحميل الفاتورة</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

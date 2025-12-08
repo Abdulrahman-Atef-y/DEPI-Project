@@ -1,0 +1,33 @@
+﻿git : remote: error: GH013: Repository rule violations found for refs/heads/master.        
+At line:1 char:15
++ $pushOutput = git push origin $branch 2>&1
++               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (remote: error: ...master.        :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+remote: 
+remote: - GITHUB PUSH PROTECTION        
+remote:   â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”        
+remote:     Resolve the following violations before pushing again        
+remote: 
+remote:     - Push cannot contain secrets        
+remote: 
+remote:             
+remote:      (?) Learn how to resolve a blocked push        
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolvi
+ng-a-blocked-push        
+remote:             
+remote:             
+remote:       â€”â€” Stripe Test API Secret Key â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”        
+remote:        locations:        
+remote:          - commit: 9fcb62e24b1fa0bcc7b9758facd24420c45d1504        
+remote:            path: Hotel Management System/appsettings.json:16        
+remote:             
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.        
+remote:        https://github.com/Abdulrahman-Atef-y/DEPI-Project/security/secret-scanning/unblock-secret/36Ux6yA5hbm1zx7chKjW4TdxZ3c        
+remote:             
+remote: 
+remote: 
+To https://github.com/Abdulrahman-Atef-y/DEPI-Project
+ ! [remote rejected] master -> master (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/Abdulrahman-Atef-y/DEPI-Project'

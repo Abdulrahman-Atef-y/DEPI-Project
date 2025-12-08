@@ -4,60 +4,215 @@
 }
 <link rel="stylesheet" href="~/css/admin-roomtype.css" />
 
-<div class="container mt-5" style="padding-top:120px;">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card shadow-lg p-4" style="border-radius:14px;">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                <h3 class="fw-bold mb-3 text-primary">
-                    <i class="fas fa-calendar-alt"></i> حجز @Model.RoomTypeName
-                </h3>
-                <div class="alert alert-info mb-4">
-                            <strong>سعر الليلة:</strong> @Model.PricePerNight.ToString("C")
-                        </div>
+<section class="booking-section" style="display:flex; justify-content:space-between; gap:20px; padding:50px; background:#f9f9f9; font-family:Arial, sans-serif; direction:rtl; text-align:right; margin-top:60px">
 
-                    <form asp-action="Create">
-                        <input type="hidden" asp-for="RoomTypeId" />
-                        <input type="hidden" asp-for="PricePerNight" />
-                        <input type="hidden" asp-for="RoomTypeName" />
+    <!-- Guest Information Form -->
+    <div class="guest-info" style="flex:1; background:white; padding:30px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+        <h2 style="color:#004080; margin-bottom:20px;">معلومات الضيف</h2>
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="row g-3">
-                            <div class="col-md-6">
-                                    <label asp-for="CheckInDate" class="form-label fw-semibold">تاريخ الدخول</label>
-                                <input asp-for="CheckInDate" class="form-control" type="date" />
-                                <span asp-validation-for="CheckInDate" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                    <label asp-for="CheckOutDate" class="form-label fw-semibold">تاريخ الخروج</label>
-                                <input asp-for="CheckOutDate" class="form-control" type="date" />
-                                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
-                            </div>
-                        </div>
-                            @if (Model.Amenities != null && Model.Amenities.Any())
-                            {
-                                <div class="row mt-4">
-                                    <div class="col-12">
-                                <div class="card p-3 mt-4 mb-3" style="border-radius:12px; background-color:#f8f9fa;">
-                                            <h4 class="fw-semibold mb-2">وسائل الراحة:</h4>
-                                           <p class="mb-0"> @string.Join(", ", Model.Amenities)</p>
-                                </div>
-                                </div>
-                                </div>
+            <input type="hidden" asp-for="RoomTypeId" />
+            <input type="hidden" asp-for="PricePerNight" />
+            <input type="hidden" asp-for="RoomTypeName" />
+            <input type="hidden" asp-for="Occupancy" />
 
-                            }
+            <!-- User Info -->
+            <label>البريد الإلكتروني *</label>
+            <input type="email" value="@Model.Email" disabled
+                   style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
+            <input type="hidden" name="Email" value="@Model.Email" />
 
+            <label>رقم الهاتف *</label>
+            <input type="tel"  placeholder="أدخل رقم الهاتف"
+                   style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
 
-                    <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-success btn-lg ">
-                            <i class="fas fa-check-circle me-2"></i> تأكيد الحجز
-                            </button>
-                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary btn-lg">إلغاء</a>
-                        </div>
-                    </form>
-            </div>
-        </div>
+            <!-- Number of Guests -->
+            <h3 style="margin-top:30px; color:#004080;">عدد الضيوف</h3>
+            <label>اختر عدد الضيوف *</label>
+            <select id="guestCount" asp-for="NumberOfGuests" required
+                    style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
+                <option value="">اختر</option>
+                @for (int i = 1; i <= Model.Occupancy; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+
+            <!-- Dynamic Guest Fields -->
+            <div id="guestFieldsContainer"></div>
+
+            <!-- Booking Details -->
+            <h3 style="margin-top:30px; color:#004080;">تفاصيل الحجز</h3>
+
+            <label>تاريخ الوصول *</label>
+            <input type="date" id="checkin" asp-for="CheckInDate"
+                   style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
+            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+
+            <label>تاريخ المغادرة *</label>
+            <input type="date" id="checkout" asp-for="CheckOutDate"
+                   style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
+            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+
+            <button type="submit"
+                    style="background:#004080; color:white; padding:12px 20px; border:none; border-radius:5px; cursor:pointer; width:100%; margin-top:20px;">
+                إتمام الحجز
+            </button>
+
+        </form>
     </div>
-</div>
+
+    <!-- Booking Summary -->
+    <div class="booking-summary"
+         style="flex:0.4; background:white; padding:30px; border-radius:12px;
+          box-shadow:0 4px 15px rgba(0,0,0,0.08); height:fit-content; direction:rtl;">
+
+        <h2 style="color:#004080; margin-bottom:25px; font-size:22px; text-align:right;">
+            تفاصيل الحجز
+        </h2>
+
+        <div style="background:#f1f6ff; padding:15px; border-radius:10px; margin-bottom:20px;">
+            <p style="margin:0; font-size:18px;">
+                <strong>@Model.RoomTypeName</strong>
+            </p>
+        </div>
+
+        <div style="margin-bottom:15px;">
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                <span>السعر لليلة:</span>
+                <strong>@Model.PricePerNight $</strong>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                <span>عدد الليالي:</span>
+                <strong id="nights">0</strong>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                <span>الإجمالي قبل الضريبة:</span>
+                <strong id="subtotal">$0.00</strong>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                <span>الضريبة (5%):</span>
+                <strong id="tax">$0.00</strong>
+            </div>
+
+            <hr style="margin:20px 0;">
+
+            <div style="display:flex; justify-content:space-between; font-size:20px; color:#004080; font-weight:bold;">
+                <span>المجموع الكلي:</span>
+                <span id="total">$0.00</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Dynamic Guest Fields Script -->
+<script>
+    document.getElementById("guestCount").addEventListener("change", function () {
+        const count = parseInt(this.value);
+        const container = document.getElementById("guestFieldsContainer");
+        container.innerHTML = "";
+
+        for (let i = 1; i <= count; i++) {
+            const html = `
+                <div style="background:#f1f1f1; padding:15px; border-radius:10px; margin-top:20px;">
+                    <h4 style="color:#004080;">الضيف رقم ${i}</h4>
+
+                    <label>الاسم الأول *</label>
+                    <input type="text" name="BookingGuests[${i - 1}].FirstName"
+                           placeholder="الاسم الأول"
+                           style="width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;" required>
+
+                    <label>اسم العائلة *</label>
+                    <input type="text" name="BookingGuests[${i - 1}].LastName"
+                           placeholder="اسم العائلة"
+                           style="width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;" required>
+
+                    <label>الرقم القومي / جواز السفر *</label>
+                    <input type="text" name="BookingGuests[${i - 1}].Ssn"
+                           placeholder="الرقم القومي أو جواز السفر"
+                           style="width:100%; padding:10px; border-radius:5px; border:1px solid #ccc;" required>
+                </div>
+            `;
+            container.insertAdjacentHTML("beforeend", html);
+        }
+    });
+</script>
+
+<!-- Existing Date & Price Summary Script (unchanged) -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const today = new Date().toISOString().split("T")[0];
+        const checkin = document.getElementById("checkin");
+        const checkout = document.getElementById("checkout");
+        const nightsField = document.getElementById("nights");
+        const subtotalField = document.getElementById("subtotal");
+        const taxField = document.getElementById("tax");
+        const totalField = document.getElementById("total");
+        const pricePerNight = @System.Text.Json.JsonSerializer.Serialize(Model.PricePerNight);
+
+        if (checkin) checkin.setAttribute("min", today);
+        if (checkout) checkout.setAttribute("min", today);
+
+        if (checkin) {
+            checkin.addEventListener("change", function () {
+                if (checkout) {
+                    checkout.value = "";
+                    checkout.setAttribute("min", this.value);
+                }
+                resetSummary();
+            });
+        }
+
+        if (checkout) {
+            checkout.addEventListener("change", function () {
+                if (checkin && checkin.value && checkout.value < checkin.value) {
+                    alert("لا يمكن أن يكون تاريخ المغادرة قبل تاريخ الوصول.");
+                    this.value = "";
+                    resetSummary();
+                    return;
+                }
+                calculateNights();
+            });
+        }
+
+        function calculateNights() {
+            if (!checkin || !checkout || !checkin.value || !checkout.value) return;
+            const inDate = new Date(checkin.value);
+            const outDate = new Date(checkout.value);
+            const diffTime = outDate - inDate;
+            const nights = diffTime / (1000 * 60 * 60 * 24);
+
+            if (nights < 1) {
+                alert("يجب أن تكون مدة الإقامة ليلة واحدة على الأقل.");
+                checkout.value = "";
+                resetSummary();
+                return;
+            }
+
+            nightsField.textContent = nights;
+            const subtotal = nights * pricePerNight;
+            const tax = subtotal * 0.05;
+            const total = subtotal + tax;
+
+            subtotalField.textContent = `$${subtotal.toFixed(2)}`;
+            taxField.textContent = `$${tax.toFixed(2)}`;
+            totalField.textContent = `$${total.toFixed(2)}`;
+        }
+
+        function resetSummary() {
+            nightsField.textContent = "0";
+            subtotalField.textContent = "$0.00";
+            taxField.textContent = "$0.00";
+            totalField.textContent = "$0.00";
+        }
+    });
+</script>

@@ -1,60 +1,172 @@
-﻿@model Hotel_Management_System.Models.DTOs.RoomTypeDTO
+﻿File: Views\Rooms\Details.cshtml
+````````razor
+@model Hotel_Management_System.Models.DTOs.RoomTypeDTO
+@using System.Linq
 
-<section class="details-page text-center room-details-content" style="width:100%;padding:120px 20px 50px; background:white;">
-    <div class="room-gallery" style="width:100%; max-width:1000px;margin:0 auto;">
-        <div class="gallery-main">
-            <img id="mainImage" src="@(Model.ImageUrls.FirstOrDefault() ?? "https://via.placeholder.com/800x600")" alt="@Model.Name">
-            <button class="gallery-nav prev" onclick="prevImage()">&#10094;</button>
-            <button class="gallery-nav next" onclick="nextImage()">&#10095;</button>
-            <div class="image-counter" id="imageCounter">1 / @Model.ImageUrls.Count</div>
-        </div>
-    </div>
+<div id="roomDetailsModal" >
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div >
+        <div class="modal-content">
 
-    <div class="room-info text-center" style="max-width:700px;margin:20px auto;">
-        <h2>@Model.Name</h2>
-        <p>@Model.Description</p>
-        <div class="room-meta">
-            <span><i class="fas fa-users"></i> @Model.Occupancy أشخاص</span>
-            <span class="price"><i class="fas fa-dollar-sign"></i> @Model.Price.ToString("C") / ليلة</span>
-        </div>
-
-        @if (Model.AmenitiesList != null && Model.AmenitiesList.Any())
-        {
-            <div class="room-features">
-                <h3>المميزات</h3>
-                <div class="features-grid">
-                    @foreach (var feature in Model.AmenitiesList)
-                    {
-                        <div class="feature-item">@feature</div>
-                    }
-                </div>
+            <!-- Header -->
+            <div class="modal-header">
+                <h2><i class="fas fa-info-circle"></i> تفاصيل الغرفة</h2>
+                <a class="close" asp-controller="Rooms" asp-action="Index" style="text-decoration:none">&times;</a>
             </div>
-        }
 
-        <a href="@Url.Action("Index", "Rooms")" class="btn btn-primary btn-lg mt-3">عودة للقائمة</a>
+            <div class="room-details-content">
+
+                <!-- Gallery -->
+                <div class="room-gallery">
+                    <div class="gallery-main">
+                        <img id="mainRoomImage"
+                             src="@((Model.ImageUrls != null && Model.ImageUrls.Any()) ? Model.ImageUrls[0] : "/images/default.png")"
+                             alt="@Model.Name" />
+
+                        <button class="gallery-nav prev" onclick="changeRoomImage(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+
+                        <button class="gallery-nav next" onclick="changeRoomImage(1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+
+                        <div class="image-counter">
+                            <span id="currentImage">1</span>/<span id="totalImages">@(Model.ImageUrls?.Count ?? 0)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Details -->
+                <div class="room-info">
+
+                    <h2 id="roomName">@Model.Name</h2>
+
+                    <div class="room-meta">
+                        <span class="rating">
+                            <i class="fas fa-star"></i>
+                            <span id="roomRating">@Model.Rating</span>
+                        </span>
+
+                        <span class="reviews">
+                            <i class="fas fa-comment"></i>
+                            <span id="roomReviews">@Model.ReviewCount</span> تقييم
+                        </span>
+
+                        <span class="price" id="roomPrice">
+                            @Model.Price.ToString("C") / ليلة
+                        </span>
+                    </div>
+
+                    <p id="roomDescription">@Model.Description</p>
+
+                    @if (Model.AmenitiesList != null && Model.AmenitiesList.Any())
+                    {
+                        <div class="room-features">
+                            <h3><i class="fas fa-list"></i> مميزات الغرفة</h3>
+
+                            <div class="features-grid" id="roomFeatures">
+                                @foreach (var feature in Model.AmenitiesList)
+                                {
+                                    <div class="feature-item">@feature</div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <div class="room-specs">
+                        <div class="spec-item">
+                            <i class="fas fa-users"></i>
+                            <span>السعة: <strong id="roomCapacity">@Model.Occupancy</strong> أشخاص</span>
+                        </div>
+
+                        <div class="spec-item">
+                            <i class="fas fa-expand"></i>
+                            <span>المساحة: <strong id="roomSize">@Model.Area</strong> م²</span>
+                        </div>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="reviews-section">
+                        <div class="reviews-header">
+                            <h3><i class="fas fa-star"></i> تقييمات العملاء</h3>
+                            <button class="btn-add-review" onclick="showAddReviewModal()">
+                                <i class="fas fa-plus"></i> أضف تقييمك
+                            </button>
+                        </div>
+
+                        <div class="reviews-list" id="reviewsList">
+                            @if (Model.Reviews != null && Model.Reviews.Any())
+                            {
+                                @foreach (var review in Model.Reviews)
+                                {
+                                    <div class="review-item">
+                                        <strong>@review.GuestName</strong> - ⭐ @review.Rating
+                                        <p>@review.Comment</p>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>لا يوجد تقييمات بعد.</p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="room-actions">
+                        <a asp-controller="Booking"
+                           asp-action="Create"
+                           asp-route-roomTypeId="@Model.Id"
+                           class="btn-primary btn-large">
+                            <i class="fas fa-calendar-check"></i> احجز الآن
+                        </a>
+
+                        
+
+                        <a class="btn-secondary btn-large" asp-controller="Rooms" asp-action="Index">
+                            <i class="fas fa-list"></i>
+                            العودة للقائمة
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
-</section>
+</div>
 
 @section Scripts {
     <script>
+        // Serialize image URLs safely (empty list fallback)
         const images = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ImageUrls ?? new List<string>()));
         let currentIndex = 0;
 
-        function showImage() {
-            document.getElementById('mainImage').src = images[currentIndex];
-            document.getElementById('imageCounter').innerText = (currentIndex + 1) + ' / ' + images.length;
+        function updateGallery() {
+            const imgEl = document.getElementById('mainRoomImage');
+            const currentEl = document.getElementById('currentImage');
+            const totalEl = document.getElementById('totalImages');
+            const total = images && images.length ? images.length : 1;
+
+            // show fallback image if list empty
+            imgEl.src = (images && images.length) ? images[currentIndex] : '/images/default.png';
+            currentEl.innerText = (images && images.length) ? (currentIndex + 1) : 1;
+            totalEl.innerText = total;
         }
 
-        function nextImage() {
-            currentIndex++;
-            if (currentIndex >= images.length) currentIndex = 0;
-            showImage();
-        }
-
-        function prevImage() {
-            currentIndex--;
+        function changeRoomImage(delta) {
+            if (!images || images.length === 0) return;
+            currentIndex = currentIndex + delta;
             if (currentIndex < 0) currentIndex = images.length - 1;
-            showImage();
+            if (currentIndex >= images.length) currentIndex = 0;
+            updateGallery();
         }
+
+        // initialize on load
+        document.addEventListener('DOMContentLoaded', function () {
+            updateGallery();
+        });
     </script>
 }

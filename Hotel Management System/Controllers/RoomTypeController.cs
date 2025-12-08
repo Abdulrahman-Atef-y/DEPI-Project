@@ -64,19 +64,19 @@ namespace Hotel_Management_System.Controllers
         {
             if (ModelState.IsValid)
             {
-                var hotel = await _unitOfWork.HotelRepository.GetByIdAsync(1);
+                var hotel = await _unitOfWork.HotelRepository.GetByIdAsync(2);
                 if (hotel == null)
                 {
                     ModelState.AddModelError("", "The hotel with Id = 1 does not exist.");
                     return View(dto);
-                }       
+                }
                 var roomType = new RoomType
                 {
                     Name = string.IsNullOrEmpty(dto.Name) ? "ديلوكس" : dto.Name,
                     Description = dto.Description ?? "غرفة فاخرة بتصميم عصري مع إطلالة رائعة على المدينة، مجهزة بأحدث وسائل الراحة.",
                     Price = dto.Price == 0 ? 450 : dto.Price,
                     Occupancy = dto.Occupancy == 0 ? 2 : dto.Occupancy,
-                    HotelId = 1, // HARDCODED TEMPORARILY
+                    HotelId = 2, // HARDCODED TEMPORARILY
                     Area = 30, // Default or add to DTO
                     RoomAmenities = dto.Amenities != null && dto.Amenities.Any()
                         ? string.Join(", ", dto.Amenities)

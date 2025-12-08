@@ -8,6 +8,9 @@ namespace Hotel_Management_System.Models.DTOs
         public string? RoomTypeName { get; set; }
         public double PricePerNight { get; set; }
 
+        public string phonenumber { get; set; }
+        public int BookingId { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Check-In Date")]
@@ -21,5 +24,15 @@ namespace Hotel_Management_System.Models.DTOs
         public decimal TotalPrice { get; set; }
         public List<string>? ImageUrls { get; set; } = new List<string>();
         public List<string> Amenities { get; set; } = new List<string>();
+
+        public string? Email { get; set; }
+       
+        public int Occupancy { get; set; } // ← Add this so you can pass it from controller
+
+        public int NumberOfGuests { get; set; }
+
+        public List<BookingGuestDTO> BookingGuests { get; set; }
+
+
     }
 }

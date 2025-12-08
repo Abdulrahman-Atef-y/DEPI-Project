@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Buisness_Logic_Layer.Interfaces
 {
-    public interface IRoomTypeRepository: IGenericRepository<RoomType>
+    public interface IBookingGuest : IGenericRepository<BookingGuest>
     {
-        Task<List<Review>> GetRoomTypeReviewsAsync(int roomTypeId);
+
     }
 }
