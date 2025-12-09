@@ -143,6 +143,22 @@ table td {
         cursor: pointer;
         font-size: 14px;
     }
+.room-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+    .room-actions a.btn-primary,
+    .room-actions a.btn-secondary {
+        flex: 1;
+        text-align: center;
+        padding: 12px 20px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
 
 @media (max-width: 576px) {
     .form-actions .btn {

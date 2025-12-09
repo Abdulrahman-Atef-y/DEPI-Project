@@ -33,7 +33,13 @@
                         <h4>@item.Room.RoomType.Name</h4>
                         <span class="booking-number">BK_@item.Id</span>
                     </div>
-                    <span class="booking-status confirmed">مؤكد</span>
+                    <span class="booking-status @(item.Status.ToLower())">
+                        @(
+                            item.Status == "Pending" ? "قيد الانتظار" :
+                            item.Status == "Confirmed" ? "مؤكد" :
+                            item.Status == "Cancelled" ? "ملغي" : "غير معروف"
+                            )
+                    </span>
                 </div>
                 <div class="booking-details">
                     <div class="detail-item">
@@ -69,5 +75,3 @@
         }
     }
 </div>
-<link rel="stylesheet" href="~/css/admin-roomtype.css" />
-

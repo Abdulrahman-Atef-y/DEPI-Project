@@ -5,9 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data_Access_Layer.Entities
 {
+    [Index(nameof(RoomNumber), IsUnique = true)]
     [Table("Rooms")]
     public class Room
     {

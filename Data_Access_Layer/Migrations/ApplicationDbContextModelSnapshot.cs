@@ -231,6 +231,9 @@ namespace Data_Access_Layer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoomNumber")
+                        .IsUnique();
+
                     b.HasIndex("RoomTypeId");
 
                     b.ToTable("Rooms");

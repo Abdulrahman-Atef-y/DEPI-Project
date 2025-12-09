@@ -2,7 +2,25 @@
 @{
     ViewData["Title"] = "الغرف";
 }
+<link rel="stylesheet" href="~/css/admin-roomtype.css" />
 
+<style>
+    .carousel-container,
+    .gallery-main,
+    .room-gallery {
+        direction: ltr !important;
+
+    }
+     .carousel-container .gallery-nav.prev {
+        left: 10px !important;
+        right: auto !important;
+    }
+
+    .carousel-container .gallery-nav.next {
+        right: 10px !important;
+        left: auto !important;
+    }
+</style>
 <section id="rooms" class="rooms-section" style="padding-top: 120px;">
     <h2 class="section-title">جميع الغرف</h2>
     <div class="rooms-filter">

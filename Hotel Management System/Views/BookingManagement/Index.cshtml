@@ -33,17 +33,30 @@
                     <td>@item.CheckInDate.ToShortDateString()</td>
                     <td>@item.TotalPrice.ToString("C0")</td>
                     <td>
-                       <span class="status-badge">@item.Status</span>
+                       <span class="booking-status @(item.Status.ToLower())">
+						@(
+							item.Status == "Pending" ? "قيد الانتظار" :
+							item.Status == "Confirmed" ? "مؤكد" :
+							item.Status == "Cancelled" ? "ملغي" : "غير معروف"
+							)</span>
                     </td>
                             <td class="admin-action-group">
                                 <a asp-action="ChangeStatus" asp-route-id="@item.Id" asp-route-status="Confirmed" class="admin-action-btn admin-edit">تأكيد</a>
                         <form asp-action="Cancel" asp-route-id="@item.Id" method="post"
                               onsubmit="return confirm('هل أنت متأكد من إلغاء هذا الحجز؟');"
                                       style="display:inline;">
-                                    <button type="submit" class="admin-action-btn admin-delete">
+                                    <button type="submit" class="admin-action-btn admin-cancel">
                                 إلغاء
                             </button>
                         </form>
+                                <form asp-action="Delete" asp-route-id="@item.Id" method="post"
+                                      onsubmit="return confirm('هل أنت متأكد من حذف هذا الحجز نهائياً؟');"
+                                      style="display:inline;">
+                                    <button type="submit" class="admin-action-btn admin-delete">
+                                        حذف
+                                    </button>
+                                </form>
+
                     </td>
                 </tr>
             }

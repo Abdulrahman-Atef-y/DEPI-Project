@@ -96,7 +96,13 @@
     .admin-delete:hover {
         background: #c0392b !important;
     }
-
+.admin-action-btn.admin-cancel {
+    background-color: #f4c542;
+    color: #000;
+}
+    .admin-action-btn.admin-cancel:hover {
+        background-color: #e0b53a;
+    }
 .admin-edit {
     background: #3498db !important;
     color: white !important;

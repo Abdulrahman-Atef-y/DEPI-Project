@@ -31,7 +31,7 @@ namespace Hotel_Management_System.Models.DTOs
 
         public int NumberOfGuests { get; set; }
 
-        public List<BookingGuestDTO> BookingGuests { get; set; }
+        public List<BookingGuestDTO> BookingGuests { get; set; } = new List<BookingGuestDTO>();
 
 
     }

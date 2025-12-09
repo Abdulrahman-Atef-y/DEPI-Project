@@ -44,12 +44,26 @@ namespace Hotel_Management_System.Controllers
         {
             var booking = await _unitOfWork.BookingRepository.GetByIdAsync(id);
             if (booking == null) return NotFound();
-
-            await _unitOfWork.BookingRepository.DeleteAsync(booking);
+            booking.Status = "Cancelled";
+            await _unitOfWork.BookingRepository.UpdateAsync(booking);
             await _unitOfWork.SaveChangesAsync();
 
             TempData["SuccessMessage"] = $"Booking #{id} cancelled successfully.";
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var booking = await _unitOfWork.BookingRepository.GetByIdAsync(id);
+            if (booking == null) return NotFound();
+
+            await _unitOfWork.BookingRepository.DeleteAsync(booking);
+            await _unitOfWork.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Booking #{id} deleted successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+
     }
-    }
+}
