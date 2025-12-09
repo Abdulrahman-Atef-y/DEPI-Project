@@ -1,10 +1,10 @@
 ﻿@using System.Globalization
-@model Hotel_Management_System.Models.DTOs.BookingDTO
+@model Hotel_Management_System.Models.DTOs.BookingPaymentDTO
 
 @{
     ViewData["Title"] = $"تفاصيل الحجز #{Model.BookingId}";
 
-    // 1. Setup Arabic Culture (Egyptian)
+    // 1. Setup Arabic Culture
     var arCulture = new CultureInfo("ar-EG");
 
     // 2. Calculations
@@ -14,33 +14,27 @@
     var finalTotal = subTotal + taxAmount;
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <style>
-    /* --- 1. Variables & Theme --- */
-    /* Changed from :root to .bk-section
-           so these colors only affect this specific invoice section
-        */
+    /* ... [Your existing styles remain exactly the same] ... */
     .bk-section {
-        /* Palette: Luxury Hotel (Navy & Gold) */
-        --primary-color: #1a2b48; /* Deep Navy Blue */
-        --accent-color: #1a2b48; /* Gold for highlights */
-        /* Text Colors */
+        --primary-color: #1a2b48;
+        --accent-color: #1a2b48;
         --text-dark: #1a1a1a;
         --text-muted: #666666;
-        /* Backgrounds */
         --bg-light: #f9f9f9;
         --card-bg: #ffffff;
-        /* Status Colors */
         --border-color: #e0e0e0;
         --success-color: #2e7d32;
+        --fail-color: #c62828;
         --success-bg: #e8f5e9;
-        /* Typography */
         --font-main: 'Cairo', sans-serif;
-        /* Layout settings */
         font-family: var(--font-main);
         background-color: var(--bg-light);
         color: var(--text-dark);
         direction: rtl;
-        padding: 140px 0;
+        padding: 50px 0; /* Reduced padding for better PDF fit */
         line-height: 1.6;
     }
 
@@ -50,19 +44,17 @@
 
     .bk-container {
         max-width: 1200px;
-        margin: 0 auto;
+        margin: 90px auto;
         padding: 0 15px;
     }
 
-    /* --- 2. Layout Grid --- */
     .bk-layout {
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 24px;
         margin-top: 24px;
     }
-
-    @@media (max-width: 992px) {
+    @@ media (max-width: 992px) {
         .bk-layout
 
     {
@@ -71,7 +63,6 @@
 
     }
 
-    /* --- 3. Header --- */
     .bk-header {
         display: flex;
         justify-content: space-between;
@@ -93,13 +84,14 @@
 
     .bk-ref-val {
         font-family: monospace;
-        color: var(--accent-color); /* Gold ID */
+        color: var(--accent-color);
         font-weight: bold;
         background: #fff8e1;
         padding: 2px 6px;
         border-radius: 4px;
     }
 
+    /* Buttons */
     .bk-btn-print {
         background-color: white;
         border: 1px solid var(--primary-color);
@@ -120,7 +112,27 @@
             color: white;
         }
 
-    /* --- 4. Cards --- */
+    .bk-btn-download {
+        display: block;
+        width: 100%;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        margin-top: 24px;
+        font-size: 1rem;
+        transition: background 0.2s;
+    }
+
+        .bk-btn-download:hover {
+            background-color: #2c4a7c;
+        }
+
+    /* Cards & Layout */
     .bk-card {
         background: var(--card-bg);
         border-radius: 12px;
@@ -143,16 +155,14 @@
     }
 
         .bk-card-title i {
-            color: var(--accent-color); /* Gold Icons */
+            color: var(--accent-color);
         }
 
-    /* --- 5. Contact Grid --- */
     .bk-contact-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
     }
-
     @@media (max-width: 768px) {
         .bk-contact-grid
 
@@ -183,12 +193,7 @@
         margin-bottom: 4px;
     }
 
-    /* .bk-value {
-        font-weight: 700;
-        color: var(--text-dark);
-    } */
-
-    /* --- 6. Guest List --- */
+    /* Guest List */
     .bk-card-header {
         display: flex;
         justify-content: space-between;
@@ -210,7 +215,7 @@
         padding: 16px;
         margin-bottom: 12px;
         background: #fff;
-        border-right: 4px solid var(--accent-color); /* Gold accent */
+        border-right: 4px solid var(--accent-color);
         display: flex;
         align-items: center;
         gap: 16px;
@@ -261,7 +266,7 @@
         font-size: 0.8rem;
     }
 
-    /* --- 7. Right Column (Summary) --- */
+    /* Summary Right */
     .bk-sticky {
         position: sticky;
         top: 20px;
@@ -325,27 +330,17 @@
         border-radius: 6px;
     }
 
-    .bk-btn-download {
-        display: block;
-        width: 100%;
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 14px;
-        border-radius: 8px;
-        font-weight: 700;
-        font-family: inherit;
-        cursor: pointer;
-        margin-top: 24px;
-        font-size: 1rem;
-        transition: background 0.2s;
+    .bk-paid-status-pn {
+        color: var(--fail-color);
+        font-size: 0.9rem;
+        text-align: center;
+        margin-top: 12px;
+        background: var(--success-bg);
+        padding: 8px;
+        border-radius: 6px;
     }
 
-        .bk-btn-download:hover {
-            background-color: #2c4a7c;
-        }
-
-    /* --- Print Styles --- */
+    /* Print / PDF Styles */
     @@media print {
         .bk-no-print, nav, footer, header
 
@@ -353,37 +348,24 @@
         display: none !important;
     }
 
-    .bk-btn-print {
-        display: none;
-    }
-
-    body {
-        background: white;
-    }
-
     .bk-card {
+        border: 1px solid #ccc !important;
         box-shadow: none !important;
-        border: 1px solid #000 !important;
-    }
-
-    .bk-container {
-        width: 100%;
-        max-width: 100%;
-        padding: 0;
     }
 
     .bk-layout {
         display: block;
     }
-
-    .bk-col-right {
-        margin-top: 20px;
-        page-break-inside: avoid;
+    /* Ensure two columns appear in PDF if using html2pdf */
+    .bk-col-left {
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     }
 </style>
-<section class="bk-section">
+
+<section class="bk-section" id="invoice-content">
     <div class="bk-container">
 
         <div class="bk-header">
@@ -392,7 +374,7 @@
                 <p class="bk-ref-label">رقم الحجز: <span class="bk-ref-val">#BK-@Model.BookingId</span></p>
             </div>
             <button onclick="window.print()" class="bk-btn-print bk-no-print">
-                <i class="fas fa-print"></i> طباعة / حفظ PDF
+                <i class="fas fa-print"></i> طباعة
             </button>
         </div>
 
@@ -470,7 +452,7 @@
             </div>
 
             <div class="bk-col-right">
-                <div class="bk-card bk-sticky">
+                <div class="bk-card">
                     <h4 class="bk-card-title">
                         <i class="fas fa-receipt"></i> ملخص الحجز
                     </h4>
@@ -510,15 +492,57 @@
                             <span>المجموع الكلي</span>
                             <span>@finalTotal.ToString("N2") ج.م.</span>
                         </div>
-                        <div class="bk-paid-status">
-                            <i class="fas fa-check-circle"></i> تم الدفع بالكامل
-                        </div>
+
+                        @* 3. Fixed Syntax Errors here (Removed @ inside if) *@
+                        @if (Model.PaymentStatus == "Completed")
+                        {
+                            <div class="bk-paid-status">
+                                <i class="fas fa-check-circle"></i> تم الدفع بالكامل
+                            </div>
+                        }
+                        else if (Model.PaymentStatus == "Pending")
+                        {
+                            <div class="bk-paid-status-pn">
+                                <i class="fas fa-check-circle"></i> الدفع سيتم في الاستقبال
+                            </div>
+                        }
                     </div>
 
-                    <button class="bk-btn-download bk-no-print">تحميل الفاتورة</button>
+                    <button id="btn-download" class="bk-btn-download bk-no-print">
+                        <i class="fas fa-file-pdf"></i> تحميل الفاتورة
+                    </button>
                 </div>
             </div>
 
         </div>
     </div>
 </section>
+
+<script>
+    document.getElementById('btn-download').addEventListener('click', function () {
+        // Get the element
+        var element = document.getElementById('invoice-content');
+
+        // Options for the PDF
+        var opt = {
+            margin:       [10, 10, 10, 10], // Top, Left, Bottom, Right
+            filename:     'Invoice_#@Model.BookingId' + '.pdf', // Dynamic Filename
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true }, // Scale 2 for better quality
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Button feedback
+        var btn = this;
+        var originalText = btn.innerHTML;
+        btn.innerHTML = "جاري التحميل...";
+        btn.disabled = true;
+
+        // Generate PDF
+        html2pdf().set(opt).from(element).save().then(function(){
+            // Reset button
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+    });
+</script>

@@ -4,6 +4,7 @@ using Data_Access_Layer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251208222859_add_payment_table")]
+    partial class add_payment_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,9 +219,6 @@ namespace Data_Access_Layer.Migrations
 
                     b.Property<int>("Floor")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("ReservedUntil")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("RoomNumber")
                         .HasColumnType("int");
@@ -530,8 +530,7 @@ namespace Data_Access_Layer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId")
-                        .IsUnique();
+                    b.HasIndex("BookingId");
 
                     b.ToTable("Payments");
                 });
@@ -712,9 +711,10 @@ namespace Data_Access_Layer.Migrations
             modelBuilder.Entity("Payment", b =>
                 {
                     b.HasOne("Data_Access_Layer.Entities.Booking", "Booking")
-                        .WithOne("Payment")
-                        .HasForeignKey("Payment", "BookingId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Booking");
                 });
@@ -722,9 +722,6 @@ namespace Data_Access_Layer.Migrations
             modelBuilder.Entity("Data_Access_Layer.Entities.Booking", b =>
                 {
                     b.Navigation("BookingGuests");
-
-                    b.Navigation("Payment")
-                        .IsRequired();
 
                     b.Navigation("Reviews");
                 });

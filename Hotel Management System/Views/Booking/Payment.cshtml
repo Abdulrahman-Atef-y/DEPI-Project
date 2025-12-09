@@ -1,0 +1,294 @@
+﻿@using System.Globalization
+@model Hotel_Management_System.Models.DTOs.PaymentDTO
+@{
+    ViewData["Title"] = "إتمام الدفع";
+
+    var arCulture = new CultureInfo("ar-EG");
+
+    var nights = (Model.CheckOutDate - Model.CheckInDate).Days;
+    var subTotal = Model.PricePerNight * nights;
+    var taxAmount = subTotal * 0.05;
+    var finalTotal = subTotal + taxAmount;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+        .input-group i {
+            position: absolute;
+            right: 15px;
+            top: 40px;
+            color: #888;
+        }
+
+    .input-with-icon {
+        padding-right: 40px !important;
+    }
+
+    .payment-methods {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .method-card {
+        flex: 1;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+        background: white;
+    }
+
+        .method-card.active {
+            border-color: #004080;
+            background-color: #f1f6ff;
+            color: #004080;
+            font-weight: bold;
+        }
+
+    /* Validation Error Styles */
+    .field-validation-error {
+        color: #dc3545;
+        font-size: 0.85em;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .input-validation-error {
+        border-color: #dc3545 !important;
+        background-color: #fff8f8;
+    }
+</style>
+
+<section class="booking-section" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:20px; padding:50px; background:#f9f9f9; direction:rtl; text-align:right;">
+
+    <div class="payment-info" style="flex:1; min-width: 300px; background:white; padding:30px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+        <h2 style="color:#004080; margin-bottom:20px;">تفاصيل الدفع</h2>
+
+        <div class="payment-methods">
+            <div class="method-card active" onclick="selectMethod(this, 'card')">
+                <i class="fas fa-credit-card fa-2x" style="margin-bottom:10px;"></i><br>
+                بطاقة ائتمان
+            </div>
+            <div class="method-card" onclick="selectMethod(this, 'cash')">
+                <i class="fas fa-money-bill-wave fa-2x" style="margin-bottom:10px;"></i><br>
+                دفع عند الوصول
+            </div>
+        </div>
+
+        <form id="paymentForm" asp-action="Payment" method="post">
+
+            <div asp-validation-summary="All" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-weight: bold;"></div>
+
+            <input type="hidden" name="PaymentStatus" value="Pending" />
+            <input type="hidden" id="paymentMethodInput" name="PaymentMethod" value="CreditCard" />
+
+            <input type="hidden" asp-for="BookingId" />
+            <input type="hidden" asp-for="Amount" />
+            <input type="hidden" asp-for="PaymentId" />
+            <input type="hidden" asp-for="CheckInDate" />
+            <input type="hidden" asp-for="CheckOutDate" />
+            <input type="hidden" asp-for="RoomTypeName" />
+            <input type="hidden" asp-for="PricePerNight" />
+
+            <div id="card-details">
+                <div class="input-group">
+                    <label>اسم حامل البطاقة *</label>
+                    <input type="text" placeholder="الاسم كما يظهر على البطاقة"
+                           style="width:100%; padding:10px; margin:5px 0 0; border-radius:5px; border:1px solid #ccc;">
+                </div>
+
+                <div class="input-group">
+                    <label>رقم البطاقة *</label>
+                    <i class="fas fa-credit-card"></i>
+                    <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" asp-for="CardNumber"
+                           class="input-with-icon"
+                           style="width:100%; padding:10px; margin:5px 0 0; border-radius:5px; border:1px solid #ccc;">
+                    <span asp-validation-for="CardNumber"></span>
+                </div>
+
+                <div style="display:flex; gap:15px;">
+                    <div class="input-group" style="flex:1;">
+                        <label>تاريخ الانتهاء *</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" asp-for="Expiry"
+                               style="width:100%; padding:10px; margin:5px 0 0; border-radius:5px; border:1px solid #ccc;">
+                        <span asp-validation-for="Expiry"></span>
+                    </div>
+                    <div class="input-group" style="flex:1;">
+                        <label>رمز الأمان (CVC) *</label>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="123" maxlength="3" asp-for="CVV"
+                               class="input-with-icon"
+                               style="width:100%; padding:10px; margin:5px 0 0; border-radius:5px; border:1px solid #ccc;">
+                        <span asp-validation-for="CVV"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cash-message" style="display:none; background:#e9ffe9; border:1px solid #28a745; color:#155724; padding:15px; border-radius:5px; margin-bottom:20px;">
+                <i class="fas fa-check-circle"></i> يمكنك دفع المبلغ كاملاً عند الوصول إلى الفندق. يرجى تأكيد الحجز الآن.
+            </div>
+
+            <button type="submit"
+                    style="background:#004080; color:white; padding:15px 20px; border:none; border-radius:5px; cursor:pointer; width:100%; margin-top:20px; font-size:18px; font-weight:bold;">
+                <i class="fas fa-lock" style="margin-left:8px"></i> إتمام الحجز والدفع
+            </button>
+
+            <p style="text-align:center; color:#666; font-size:12px; margin-top:10px;">
+                مدفوعات آمنة ومشفرة بنسبة 100%
+            </p>
+
+        </form>
+    </div>
+
+    <div class="booking-summary" style="flex:0.4; min-width: 300px; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.08); height:fit-content; direction:rtl;">
+        <h2 style="color:#004080; margin-bottom:25px; font-size:22px; text-align:right; border-bottom: 2px solid #f1f1f1; padding-bottom:15px;">
+            ملخص الطلب
+        </h2>
+
+        <div style="background:#f1f6ff; padding:15px; border-radius:10px; margin-bottom:20px;">
+            <p style="margin:0; font-size:16px; color:#555;">نوع الغرفة:</p>
+            <p style="margin:5px 0 0; font-size:18px; color:#004080;">
+                <strong>@Model.RoomTypeName</strong>
+            </p>
+        </div>
+
+        <div style="margin-bottom:15px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; background:#fafafa; padding:10px; border-radius:5px;">
+                <div style="text-align:center;">
+                    <span style="display:block; font-size:12px; color:#666;">الوصول</span>
+                    <strong style="color:#333;">@Model.CheckInDate.ToString("dd MMMM yyyy", arCulture)</strong>
+                </div>
+                <div style="align-self:center; color:#ccc;">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <div style="text-align:center;">
+                    <span style="display:block; font-size:12px; color:#666;">المغادرة</span>
+                    <strong style="color:#333;">@Model.CheckOutDate.ToString("dd MMMM yyyy", arCulture)</strong>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                <span>السعر لليلة:</span>
+                <strong>@Model.PricePerNight.ToString("C")</strong>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                <span>عدد الليالي:</span>
+                <strong>@nights</strong>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin:10px 0; border-top:1px dashed #ccc; padding-top:10px;">
+                <span>الإجمالي قبل الضريبة:</span>
+                <strong>@subTotal</strong>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                <span>الضريبة (5%):</span>
+                <strong>@taxAmount</strong>
+            </div>
+
+            <hr style="margin:20px 0;">
+
+            <div style="display:flex; justify-content:space-between; font-size:22px; color:#004080; font-weight:bold;">
+                <span>المجموع الكلي:</span>
+                <span>@finalTotal</span>
+            </div>
+
+            <hr style="margin:20px 0;">
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+    function selectMethod(element, method) {
+        // UI Handling
+        document.querySelectorAll('.method-card').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+
+        const cardDetails = document.getElementById('card-details');
+        const cashMessage = document.getElementById('cash-message');
+        const inputs = cardDetails.querySelectorAll('input');
+        const form = document.getElementById('paymentForm');
+        const methodInput = document.getElementById('paymentMethodInput');
+
+        if (method === 'cash') {
+            // 1. Switch UI
+            cardDetails.style.display = 'none';
+            cashMessage.style.display = 'block';
+
+            // 2. Remove 'required' logic (handled by Controller now anyway, but good for UX)
+            inputs.forEach(input => input.removeAttribute('required'));
+
+            // 3. Change Form Action to Cash Action
+            // IMPORTANT: Make sure 'Booking' matches your actual Controller name
+            form.action = '@Url.Action("PaymentCash", "Booking")';
+
+            // 4. Update Hidden Field
+            methodInput.value = 'Cash';
+
+        } else {
+            // 1. Switch UI
+            cardDetails.style.display = 'block';
+            cashMessage.style.display = 'none';
+
+            // 2. Add 'required' logic
+            inputs.forEach(input => input.setAttribute('required', 'true'));
+
+            // 3. Change Form Action back to Card Action
+            form.action = '@Url.Action("Payment", "Booking")';
+
+            // 4. Update Hidden Field
+            methodInput.value = 'CreditCard';
+        }
+    }
+
+    document.getElementById('cardNumber').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
+    });
+
+    document.getElementById('expiryDate').addEventListener('input', function (e) {
+        var input = e.target.value;
+        var values = input.split('/').map(v => v.replace(/\D/g, ''));
+        if (values[0]) values[0] = checkValue(values[0], 12);
+        if (values[1]) values[1] = checkValue(values[1], 31);
+        var output = values.map((v,i) => v.length==2 && i<2 ? v+'/' : v);
+        e.target.value = output.join('').substr(0,5);
+    });
+
+    function checkValue(str,max){
+        if(str.charAt(0)!=='0'||str=='00'){
+            var num=parseInt(str);
+            if(isNaN(num)||num<=0||num>max) num=1;
+            str=num>parseInt(max.toString().charAt(0))&&num.toString().length==1?'0'+num:num.toString();
+        }
+        return str;
+    }
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

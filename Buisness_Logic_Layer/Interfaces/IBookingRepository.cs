@@ -9,6 +9,7 @@ namespace Buisness_Logic_Layer.Interfaces
 {
     public interface IBookingRepository : IGenericRepository<Booking>
     {
+        Task<Booking> GetBookingWithRoomAndTypeAsync(int bookingId);
 
 
     }

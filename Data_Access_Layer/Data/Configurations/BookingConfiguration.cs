@@ -34,6 +34,11 @@ namespace Data_Access_Layer.Data.Configurations
     .OnDelete(DeleteBehavior.Cascade);
 
 
+            builder.HasOne(b => b.Payment)
+       .WithOne(p => p.Booking)
+       .HasForeignKey<Payment>(p => p.BookingId)
+       .IsRequired(false)
+       .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

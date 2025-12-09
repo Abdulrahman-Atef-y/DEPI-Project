@@ -19,6 +19,7 @@ namespace Buisness_Logic_Layer.Repositories
         private IReviewRepository? _reviewRepository;
         private IGuestRepository? _guestRepository;
         private IRoomImageRepository? _roomImageRepository;
+        private IPaymentRepository? _paymentRepository;
 
 
 
@@ -36,7 +37,7 @@ namespace Buisness_Logic_Layer.Repositories
         public IGuestRepository GuestRepository => _guestRepository ??= new GuestRepository(_context);
         public IRoomImageRepository RoomImageRepository => _roomImageRepository ??= new RoomImageRepository(_context);
 
-
+        public IPaymentRepository PaymentRepository => _paymentRepository ??= new PaymentRepository(_context);
 
         public Task<int> SaveChangesAsync()
         {

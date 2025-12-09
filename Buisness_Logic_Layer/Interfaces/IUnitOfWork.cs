@@ -14,9 +14,11 @@ namespace Buisness_Logic_Layer.Interfaces
         IGuestRepository GuestRepository { get; }
         IRoomImageRepository RoomImageRepository { get; }
 
-        
+        IPaymentRepository PaymentRepository { get; }
 
-        
+
+
+
 
 
 

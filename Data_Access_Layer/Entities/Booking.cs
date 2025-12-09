@@ -45,6 +45,8 @@ namespace Data_Access_Layer.Entities
         public string? StripePaymentIntentId { get; set; }
         public List<Review> Reviews { get; set; }
 
+        public virtual Payment Payment { get; set; }
+
         public ICollection<BookingGuest> BookingGuests { get; set; }
 
 

@@ -24,6 +24,8 @@ namespace Data_Access_Layer.Entities
         [Required]
         public roomStatus Status { get; set; } = roomStatus.Available;
 
+        public DateTime? ReservedUntil { get; set; }
+
         [Required]
         public int RoomTypeId { get; set; }
         public RoomType RoomType { get; set; }

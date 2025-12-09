@@ -2,12 +2,13 @@
 @{
     ViewData["Title"] = "حجز الغرفة";
 }
+
 <link rel="stylesheet" href="~/css/admin-roomtype.css" />
 
-<section class="booking-section" style="display:flex; justify-content:space-between; gap:20px; padding:50px; background:#f9f9f9; font-family:Arial, sans-serif; direction:rtl; text-align:right; margin-top:60px">
+<section class="booking-section" style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:20px; padding:50px; background:#f9f9f9; font-family:Arial, sans-serif; direction:rtl; text-align:right; margin-top:60px;">
 
     <!-- Guest Information Form -->
-    <div class="guest-info" style="flex:1; background:white; padding:30px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+    <div class="guest-info" style="flex:1; min-width:300px; background:white; padding:30px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
         <h2 style="color:#004080; margin-bottom:20px;">معلومات الضيف</h2>
 
         <form asp-action="Create" method="post">
@@ -19,21 +20,17 @@
             <input type="hidden" asp-for="RoomTypeName" />
             <input type="hidden" asp-for="Occupancy" />
 
-            <!-- User Info -->
+            <!-- Email & Phone -->
             <label>البريد الإلكتروني *</label>
-            <input type="email" value="@Model.Email" disabled
-                   style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
-            <input type="hidden" name="Email" value="@Model.Email" />
+            <input asp-for="Email" class="form-control" readonly  />
 
             <label>رقم الهاتف *</label>
-            <input type="tel"  placeholder="أدخل رقم الهاتف"
-                   style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
+            <input asp-for="phonenumber" type="tel" placeholder="أدخل رقم الهاتف" class="form-control" required />
 
             <!-- Number of Guests -->
             <h3 style="margin-top:30px; color:#004080;">عدد الضيوف</h3>
             <label>اختر عدد الضيوف *</label>
-            <select id="guestCount" asp-for="NumberOfGuests" required
-                    style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
+            <select asp-for="NumberOfGuests" id="guestCount" required class="form-control">
                 <option value="">اختر</option>
                 @for (int i = 1; i <= Model.Occupancy; i++)
                 {
@@ -48,31 +45,23 @@
             <h3 style="margin-top:30px; color:#004080;">تفاصيل الحجز</h3>
 
             <label>تاريخ الوصول *</label>
-            <input type="date" id="checkin" asp-for="CheckInDate"
-                   style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
+            <input asp-for="CheckInDate" type="date" id="checkin" class="form-control" />
             <span asp-validation-for="CheckInDate" class="text-danger"></span>
 
             <label>تاريخ المغادرة *</label>
-            <input type="date" id="checkout" asp-for="CheckOutDate"
-                   style="width:100%; padding:10px; margin:5px 0 15px; border-radius:5px; border:1px solid #ccc;">
+            <input asp-for="CheckOutDate" type="date" id="checkout" class="form-control" />
             <span asp-validation-for="CheckOutDate" class="text-danger"></span>
 
-            <button type="submit"
-                    style="background:#004080; color:white; padding:12px 20px; border:none; border-radius:5px; cursor:pointer; width:100%; margin-top:20px;">
+            <button type="submit" class="btn btn-primary" style="background:#004080; color:white; padding:12px 20px; border:none; border-radius:5px; cursor:pointer; width:100%; margin-top:20px;">
                 إتمام الحجز
             </button>
-
         </form>
     </div>
 
     <!-- Booking Summary -->
-    <div class="booking-summary"
-         style="flex:0.4; background:white; padding:30px; border-radius:12px;
-          box-shadow:0 4px 15px rgba(0,0,0,0.08); height:fit-content; direction:rtl;">
+    <div class="booking-summary" style="flex:0.4; min-width:300px; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.08); height:fit-content;">
 
-        <h2 style="color:#004080; margin-bottom:25px; font-size:22px; text-align:right;">
-            تفاصيل الحجز
-        </h2>
+        <h2 style="color:#004080; margin-bottom:25px; font-size:22px; text-align:right;">تفاصيل الحجز</h2>
 
         <div style="background:#f1f6ff; padding:15px; border-radius:10px; margin-bottom:20px;">
             <p style="margin:0; font-size:18px;">
@@ -107,48 +96,40 @@
                 <span>المجموع الكلي:</span>
                 <span id="total">$0.00</span>
             </div>
-
         </div>
 
     </div>
 
 </section>
 
-<!-- Dynamic Guest Fields Script -->
+<!-- Scripts -->
 <script>
+    // Dynamic Guest Fields
     document.getElementById("guestCount").addEventListener("change", function () {
         const count = parseInt(this.value);
         const container = document.getElementById("guestFieldsContainer");
         container.innerHTML = "";
 
-        for (let i = 1; i <= count; i++) {
+        for (let i = 0; i < count; i++) {
             const html = `
                 <div style="background:#f1f1f1; padding:15px; border-radius:10px; margin-top:20px;">
-                    <h4 style="color:#004080;">الضيف رقم ${i}</h4>
+                    <h4 style="color:#004080;">الضيف رقم ${i + 1}</h4>
 
                     <label>الاسم الأول *</label>
-                    <input type="text" name="BookingGuests[${i - 1}].FirstName"
-                           placeholder="الاسم الأول"
-                           style="width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;" required>
+                    <input type="text" name="BookingGuests[${i}].FirstName" placeholder="الاسم الأول" class="form-control" required />
 
                     <label>اسم العائلة *</label>
-                    <input type="text" name="BookingGuests[${i - 1}].LastName"
-                           placeholder="اسم العائلة"
-                           style="width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;" required>
+                    <input type="text" name="BookingGuests[${i}].LastName" placeholder="اسم العائلة" class="form-control" required />
 
                     <label>الرقم القومي / جواز السفر *</label>
-                    <input type="text" name="BookingGuests[${i - 1}].Ssn"
-                           placeholder="الرقم القومي أو جواز السفر"
-                           style="width:100%; padding:10px; border-radius:5px; border:1px solid #ccc;" required>
+                    <input type="text" name="BookingGuests[${i}].SSN" placeholder="الرقم القومي أو جواز السفر" class="form-control" required />
                 </div>
             `;
             container.insertAdjacentHTML("beforeend", html);
         }
     });
-</script>
 
-<!-- Existing Date & Price Summary Script (unchanged) -->
-<script>
+    // Date & Price Summary
     document.addEventListener('DOMContentLoaded', function () {
         const today = new Date().toISOString().split("T")[0];
         const checkin = document.getElementById("checkin");
@@ -162,34 +143,29 @@
         if (checkin) checkin.setAttribute("min", today);
         if (checkout) checkout.setAttribute("min", today);
 
-        if (checkin) {
-            checkin.addEventListener("change", function () {
-                if (checkout) {
-                    checkout.value = "";
-                    checkout.setAttribute("min", this.value);
-                }
-                resetSummary();
-            });
-        }
+        if (checkin) checkin.addEventListener("change", function () {
+            if (checkout) {
+                checkout.value = "";
+                checkout.setAttribute("min", this.value);
+            }
+            resetSummary();
+        });
 
-        if (checkout) {
-            checkout.addEventListener("change", function () {
-                if (checkin && checkin.value && checkout.value < checkin.value) {
-                    alert("لا يمكن أن يكون تاريخ المغادرة قبل تاريخ الوصول.");
-                    this.value = "";
-                    resetSummary();
-                    return;
-                }
-                calculateNights();
-            });
-        }
+        if (checkout) checkout.addEventListener("change", function () {
+            if (checkin && checkin.value && checkout.value < checkin.value) {
+                alert("لا يمكن أن يكون تاريخ المغادرة قبل تاريخ الوصول.");
+                this.value = "";
+                resetSummary();
+                return;
+            }
+            calculateNights();
+        });
 
         function calculateNights() {
             if (!checkin || !checkout || !checkin.value || !checkout.value) return;
             const inDate = new Date(checkin.value);
             const outDate = new Date(checkout.value);
-            const diffTime = outDate - inDate;
-            const nights = diffTime / (1000 * 60 * 60 * 24);
+            const nights = (outDate - inDate) / (1000 * 60 * 60 * 24);
 
             if (nights < 1) {
                 alert("يجب أن تكون مدة الإقامة ليلة واحدة على الأقل.");

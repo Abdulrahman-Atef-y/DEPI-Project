@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Data_Access_Layer.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace Data_Access_Layer.Entities
+public class Payment
 {
-    public class Payment
-    {
-        public int Id { get; set; }
-        public int BookingId { get; set; }
-        public decimal Amount { get; set; }
-        public string StripeSessionId { get; set; }
-        public string Status { get; set; } = "Pending"; // Pending, Paid, Failed
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-    }
+    [Key]
+    public int Id { get; set; }
+
+    public int BookingId { get; set; }  // FK to Booking
+    public decimal Amount { get; set; }
+    public string PaymentStatus { get; set; } // Pending, Completed, Failed
+    public string PaymentMethod { get; set; } // CreditCard, PayPal, etc.
+    public DateTime PaymentDate { get; set; }
+
+    public virtual Booking Booking { get; set; } // Navigation property
 }

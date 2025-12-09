@@ -14,16 +14,18 @@ namespace Hotel_Management_System
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            
-
-            
-
-            // Add services to the container.
+            // -------------------------------------------------
+            // Add services to the container
+            // -------------------------------------------------
             builder.Services.AddControllersWithViews();
+
+            // Database
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString));
+
+            // Identity
             builder.Services.AddIdentity<Guest, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -32,16 +34,34 @@ namespace Hotel_Management_System
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
+
+            // UnitOfWork
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // -------------------------------------------------
+            // SESSION configuration (NEW)
+            // -------------------------------------------------
+            builder.Services.AddDistributedMemoryCache(); // required for session
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // session timeout
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             var app = builder.Build();
 
+            // -------------------------------------------------
+            // Initialize DB and seed data
+            // -------------------------------------------------
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -57,19 +77,15 @@ namespace Hotel_Management_System
                     Console.WriteLine(ex.Message);
                 }
             }
-            // Configure the HTTP request pipeline.
+
+            // -------------------------------------------------
+            // Configure the HTTP request pipeline
+            // -------------------------------------------------
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-
-
-
-
-
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -78,6 +94,9 @@ namespace Hotel_Management_System
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Add session middleware BEFORE MapControllerRoute
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

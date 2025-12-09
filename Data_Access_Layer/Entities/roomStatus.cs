@@ -11,6 +11,7 @@ namespace Data_Access_Layer.Entities
         Available = 1,
         Occupied = 2,
         UnderMaintenance = 3,
-        Cleaning = 4
+        Cleaning = 4,
+        Reserved = 5
     }
 }
