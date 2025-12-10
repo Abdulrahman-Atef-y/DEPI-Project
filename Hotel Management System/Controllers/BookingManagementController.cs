@@ -1,6 +1,8 @@
 ﻿using Buisness_Logic_Layer.Interfaces;
+using Data_Access_Layer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace Hotel_Management_System.Controllers
 {
@@ -14,15 +16,26 @@ namespace Hotel_Management_System.Controllers
                 _unitOfWork = unitOfWork;
             }
 
-            public async Task<IActionResult> Index()
+            public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, int? roomId)
             {
 
                 var allBookings = await _unitOfWork.BookingRepository.FindAllAsync(
-                    criteria: null,
-                    includes: new[] { "Guest", "Room" }
+                    (Expression<Func<Booking, bool>>?)null,
+                     new[] { "Guest", "Room" }
                 );
+            var filtered = allBookings.AsQueryable();
 
-                return View(allBookings.OrderByDescending(b => b.Date));
+            if (startDate.HasValue)
+                filtered = filtered.Where(b => b.Date >= startDate.Value);
+
+            if (endDate.HasValue)
+                filtered = filtered.Where(b => b.Date <= endDate.Value);
+
+            if (roomId.HasValue)
+                filtered = filtered.Where(b => b.RoomId == roomId.Value);
+
+            ViewBag.Rooms = await _unitOfWork.RoomRepository.FindAllAsync((Expression<Func<Room, bool>>?)null,null);
+            return View(filtered.OrderByDescending(b => b.Date));
             }
 
 

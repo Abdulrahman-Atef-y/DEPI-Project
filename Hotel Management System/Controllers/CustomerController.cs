@@ -23,21 +23,31 @@ namespace Hotel_Management_System.Controllers
             public async Task<IActionResult> Index()
             {
                 var users = _userManager.Users.ToList();
-                var list = new List<CustomerDTO>();
+            var admins = new List<CustomerDTO>();
+
+            var customers = new List<CustomerDTO>();
                 foreach (var user in users)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
-                list.Add(new CustomerDTO
+                var role = roles.FirstOrDefault() ?? "Customer";
+
+                var dto = new CustomerDTO
                 {
                     Id = user.Id,
                     FullName = $"{user.FirstName} {user.LastName}",
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     CreatedAt = user.CreatedAt,
-                    Role = roles.FirstOrDefault() ?? "Customer"
-                });
+                    Role = role
+                };
+                if (role == "Admin")
+                    admins.Add(dto);
+                else
+                    customers.Add(dto);
             }
-                return View(list);
+            ViewBag.Admins = admins;
+            ViewBag.Customers = customers;
+            return View();
             }
         public IActionResult Create()
         {

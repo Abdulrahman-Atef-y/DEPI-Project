@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Hotel_Management_System.Models.DTOs.CustomerDTO>
-@{
+﻿@{
     ViewData["Title"] = "إدارة العملاء";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -7,7 +6,8 @@
 
 <div class="admin-index-root">
 <div class="admin-header">
-        <h2><i class="admin-title"></i> إدارة العملاء</h2>
+
+        <h2 class ="admin-title"><i class="fas fa-calendar-alt"></i> إدارة العملاء</h2>
         <a asp-action="Create" class="admin-create-btn" style="text-decoration:none">
     <i class="fas fa-user-plus"></i> إضافة عميل
 </a>
@@ -20,7 +20,9 @@
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+
 }
+	<h3 class="mt-4">المسؤولون</h3>
     <div class="admin-table-wrapper">
         <div class="admin-table-container">
             <table class="table admin-table">
@@ -35,7 +37,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+                @foreach (var item in (List<CustomerDTO>)ViewBag.Admins)
             {
                 <tr>
                     <td>@item.FullName</td>
@@ -60,4 +62,47 @@
     </table>
 </div>
 </div>
-</div>
+
+
+	<h3 class="mt-4">العملاء</h3>
+
+	<div class="admin-table-wrapper">
+		<div class="admin-table-container">
+			<table class="table admin-table">
+		<thead>
+			<tr>
+				<th>الاسم</th>
+				<th>البريد الإلكتروني</th>
+				<th>الهاتف</th>
+				<th>الهوية</th>
+				<th>تاريخ التسجيل</th>
+				<th>الإجراءات</th>
+			</tr>
+		</thead>
+		<tbody>
+				@foreach (var item in (List<CustomerDTO>)ViewBag.Customers)
+			{
+				<tr>
+					<td>@item.FullName</td>
+					<td>@item.Email</td>
+					<td>@item.PhoneNumber</td>
+					<td>@item.Role</td>
+					<td>@item.CreatedAt.ToShortDateString()</td>
+							<td class="admin-action-group">
+								<a asp-action="Edit" asp-route-id="@item.Id" class="admin-action-btn admin-edit">
+							<i class="fas fa-edit"></i> تعديل
+						</a>
+					  <form asp-action="Delete" asp-route-id="@item.Id" method="post"
+						onsubmit="return confirm('هل أنت متأكد من حذف هذا العميل؟');" style="display:inline;">
+						   <button type="submit" class="admin-action-btn admin-delete">
+							  حذف
+						   </button>
+					   </form>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+        </div>
+
+    </div>

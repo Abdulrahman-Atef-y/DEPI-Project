@@ -2,13 +2,39 @@
 @{
     ViewData["Title"] = "إدارة الحجوزات";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var startDateQuery = Context.Request.Query["startDate"].ToString();
+    var endDateQuery = Context.Request.Query["endDate"].ToString();
+    var roomIdQuery = Context.Request.Query["roomId"].ToString();
 }
 <link rel="stylesheet" href="~/css/admin-room.css" asp-append-version="true" />
 <div class="admin-index-root">
     <div class="admin-header">
         <h2 class="admin-title"><i class="fas fa-calendar-alt"></i> إدارة الحجوزات</h2>
     </div>
-
+     <form method="get" class="mb-3" style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div>
+            <label>من تاريخ:</label>
+            <input type="date" name="startDate" class="form-control" value="@startDateQuery" />
+        </div>
+        <div>
+            <label>إلى تاريخ:</label>
+            <input type="date" name="endDate" class="form-control" value="@endDateQuery" />
+        </div>
+        <div>
+            <label>الغرفة:</label>
+            <select name="roomId" class="form-control">
+                <option value="">جميع الغرف</option>
+                @foreach (var room in ViewBag.Rooms)
+                {
+                    var isSelected = roomIdQuery == room.Id.ToString() ? "selected" : "";
+        @: <option value="@room.Id" @isSelected>@room.RoomNumber</option>
+                }
+            </select>
+        </div>
+        <div style="align-self:flex-end;">
+            <button type="submit" class="admin-create-btn"><i class="fas fa-filter"></i> فلترة</button>
+        </div>
+    </form>
     <div class="admin-table-wrapper">
         <div class="admin-table-container">
             <table class="table admin-table">

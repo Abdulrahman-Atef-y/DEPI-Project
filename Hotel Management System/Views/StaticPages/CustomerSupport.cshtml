@@ -1,0 +1,114 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "دعم العملاء";
+}
+
+<section class="customer-support">
+    <div class="container">
+        <h1>دعم العملاء</h1>
+        <p>
+            نحن هنا لمساعدتك في أي استفسار أو مشكلة تواجهها.
+            فريق دعم العملاء لدينا جاهز للرد على جميع أسئلتكم بسرعة واحترافية.
+        </p>
+
+        <h2>طرق التواصل معنا</h2>
+        <ul>
+            <li>الهاتف: 0123456789</li>
+            <li>البريد الإلكتروني: GrandHotelSupport@gmail.com</li>
+            <li>الزيارة الشخصية في مكتبنا الرئيسي</li>
+        </ul>
+
+        <h2>أرسل لنا رسالة</h2>
+        <form>
+            <label for="name">الاسم:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">البريد الإلكتروني:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">الرسالة:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">إرسال</button>
+        </form>
+        <h2>الأسئلة الشائعة</h2>
+        <div class="faq">
+            <div class="faq-item">
+                <h3>كيف يمكنني حجز غرفة؟</h3>
+                <p>يمكنك الحجز بسهولة عن طريق إنشاء حساب وتسجيل الدخول، ثم تصفح الغرف المتاحة واختيار الغرفة التي تناسبك.</p>
+            </div>
+            <div class="faq-item">
+                <h3>هل يتوفر واي فاي مجاني؟</h3>
+                <p>نعم، جميع الغرف والمناطق العامة توفر واي فاي مجاني.</p>
+            </div>
+            <div class="faq-item">
+                <h3>هل يوجد مواقف للسيارات؟</h3>
+                <p>نعم، يتوفر موقف سيارات مجاني للضيوف داخل الفندق.</p>
+            </div>
+        </div>
+        <p>
+            نحن ملتزمون بالرد في أقرب وقت ممكن لضمان تجربة دعم ممتازة.
+        </p>
+    </div>
+
+</section>
+
+<style>
+    .customer-support {
+        background-color: #f9fafd;
+        color: #003366;
+        padding: 80px 20px 40px 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+        .customer-support .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .customer-support h1,
+        .customer-support h2 {
+            color: #0055aa;
+            margin-bottom: 20px;
+        }
+
+        .customer-support p,
+        .customer-support ul {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+            .customer-support ul li {
+                margin-bottom: 10px;
+            }
+
+        .customer-support form label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .customer-support form input,
+        .customer-support form textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .customer-support form button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #0055aa;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .customer-support form button:hover {
+                background-color: #003366;
+            }
+</style>
