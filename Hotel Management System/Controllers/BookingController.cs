@@ -516,7 +516,9 @@ namespace Hotel_Management_System.Controllers
             // B. Get the Room to ensure the price is correct (Security check)
             // We assume the Payment object or the DTO has the RoomId
             var booking = await _unitOfWork.BookingRepository.GetByIdAsync(paymentDto.BookingId);
-            
+
+            booking.Status = "Confirmed";
+
             var room = await _unitOfWork.RoomRepository.GetByIdAsync(booking.RoomId);
 
             // C. Calculate the Total Amount
@@ -537,6 +539,7 @@ namespace Hotel_Management_System.Controllers
 
             // Update the database
             await _unitOfWork.PaymentRepository.UpdateAsync(payment);
+            await _unitOfWork.BookingRepository.UpdateAsync(booking);
             await _unitOfWork.SaveChangesAsync();
 
             // -------------------------------------------------------------------------

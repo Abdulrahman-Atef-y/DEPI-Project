@@ -24,9 +24,9 @@
 <section id="rooms" class="rooms-section" style="padding-top: 120px;">
     <h2 class="section-title">جميع الغرف</h2>
     <div class="rooms-filter">
-        <a asp-action="Index" class="filter-btn @(ViewData["CurrentSort"]?.ToString() == "all" ? "active" : "")">الكل</a>
-        <a asp-action="Index" asp-route-sortOrder="price_asc" class="filter-btn @(ViewData["CurrentSort"]?.ToString() == "price_asc" ? "active" : "")">الأقل سعراً</a>
-        <a asp-action="Index" asp-route-sortOrder="price_desc" class="filter-btn @(ViewData["CurrentSort"]?.ToString() == "price_desc" ? "active" : "")">الأعلى سعراً</a>
+        <a asp-action="Index" class="filter-btn @(ViewData["CurrentSort"]?.ToString() == "all" ? "active" : "")" style="text-decoration:none">الكل</a>
+        <a asp-action="Index" asp-route-sortOrder="price_asc" class="filter-btn @(ViewData["CurrentSort"]?.ToString() == "price_asc" ? "active" : "")" style="text-decoration:none">الأقل سعراً</a>
+        <a asp-action="Index" asp-route-sortOrder="price_desc" class="filter-btn @(ViewData["CurrentSort"]?.ToString() == "price_desc" ? "active" : "")" style="text-decoration:none">الأعلى سعراً</a>
     </div>
 
     <div class="rooms-grid" id="roomsGrid">
@@ -65,10 +65,10 @@
                         </span>
                     </div>
                     <div class="room-actions">
-                        <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id" class="btn-details">
+                        <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id" class="btn-details" style="text-decoration:none">
                             <i class="fas fa-eye"></i> التفاصيل
                         </a>
-                        <a asp-controller="Booking" asp-action="Create" asp-route-roomTypeId="@room.Id" class="btn-book">
+                        <a asp-controller="Booking" asp-action="Create" asp-route-roomTypeId="@room.Id" class="btn-book" style="text-decoration:none">
                             <i class="fas fa-calendar-check"></i> احجز الآن
                         </a>
                     </div>

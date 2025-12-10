@@ -15,7 +15,7 @@
         <div class="hero-content">
             <h1 class="hero-title">جراند هوتيل</h1>
             <p class="hero-subtitle">فندق 5 نجوم - تجربة فندقية استثنائية</p>
-            <a asp-controller="Rooms" asp-action="Index" class="cta-button">
+            <a asp-controller="Rooms" asp-action="Index" class="cta-button" style="text-decoration:none">
                 <span>استعرض الغرف</span>
                 <i class="fas fa-arrow-left"></i>
             </a>
@@ -109,7 +109,7 @@
 
                             <div class="room-actions">
                                 <a class="btn-details"
-                                   asp-controller="Rooms" asp-action="Details" asp-route-id="@roomType.Id">
+                                   asp-controller="Rooms" asp-action="Details" asp-route-id="@roomType.Id" style="text-decoration:none">
                                     <i class="fas fa-eye"></i>
                                     عرض التفاصيل
                                 </a>
@@ -117,7 +117,7 @@
                                 <a asp-controller="Booking"
                                    asp-action="Create"
                                    asp-route-roomTypeId="@roomType.Id"
-                                   class="btn-book btn-primary">
+                                   class="btn-book btn-primary" style="text-decoration:none">
                                     <i class="fas fa-calendar-check"></i>
                                     احجز الآن
                                 </a>

@@ -17,6 +17,9 @@ namespace Hotel_Management_System
             // -------------------------------------------------
             // Add services to the container
             // -------------------------------------------------
+
+            builder.Services.AddScoped<IEmailService, EmailService>();
+
             builder.Services.AddControllersWithViews();
 
             // Database

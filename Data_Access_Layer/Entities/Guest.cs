@@ -41,5 +41,7 @@ namespace Data_Access_Layer.Entities
         public string? StripeCustomerId { get; set; }
         public List<Booking> Bookings { get; set; }
 
+        
+
     }
 }

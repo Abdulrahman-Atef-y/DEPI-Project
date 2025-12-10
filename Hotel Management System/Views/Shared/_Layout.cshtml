@@ -27,7 +27,7 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a asp-controller="Home" asp-action="Index">
+                <a asp-controller="Home" asp-action="Index" style="text-decoration:none">
                     <i class="fas fa-hotel"></i>
                     <span>جراند هوتيل</span>
                 </a>
@@ -35,10 +35,10 @@
 
             <ul class="nav-menu" id="navMenu">
                 <li class="nav-item">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">الرئيسية</a>
+                    <a asp-controller="Home" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")" style="text-decoration:none">الرئيسية</a>
                 </li>
                 <li class="nav-item">
-                    <a asp-controller="Rooms" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Rooms" ? "active" : "")">الغرف</a>
+                    <a asp-controller="Rooms" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Rooms" ? "active" : "")" style="text-decoration:none">الغرف</a>
                 </li>
 
                 @if (User.Identity.IsAuthenticated)
@@ -53,7 +53,7 @@
                     }
                     initials = initials.ToUpper();
                     <li class="nav-item">
-                        <a asp-controller="Booking" asp-action="MyBookings" class="nav-link">حجوزاتي</a>
+                        <a asp-controller="Booking" asp-action="MyBookings" class="nav-link" style="text-decoration:none">حجوزاتي</a>
                     </li>
                     <li class="nav-item">
                         <div class="user-nav">
@@ -65,9 +65,9 @@
                                 <div class="user-dropdown">
                                     @if (User.IsInRole("Admin"))
                                     {
-                                        <a asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a>
+                                        <a asp-controller="Admin" asp-action="Dashboard" style="text-decoration:none"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a>
                                     }
-                                    <a asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                                    <a asp-controller="Account" asp-action="Logout" style="text-decoration:none"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
                                 </div>
                             </div>
                         </div>
@@ -76,13 +76,13 @@
                 else
                 {
                     <li class="nav-item" id="authNavItem">
-                        <a asp-controller="Account" asp-action="Login" class="btn-login">
+                        <a asp-controller="Account" asp-action="Login" class="btn-login" style="text-decoration:none">
                             <i class="fas fa-sign-in-alt"></i>
                             تسجيل الدخول
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Account" asp-action="Register" class="btn-admin">
+                        <a asp-controller="Account" asp-action="Register" class="btn-admin" style="text-decoration:none">
                             <i class="fas fa-user-plus"></i>
                             حساب جديد
                         </a>
@@ -131,11 +131,11 @@
                     <div class="footer-section">
                         <h3>روابط سريعة</h3>
                         <ul class="footer-links">
-                            <li><a asp-controller="Home" asp-action="Index">الرئيسية</a></li>
-                            <li><a asp-controller="Rooms" asp-action="Index">الغرف</a></li>
+                            <li><a asp-controller="Home" asp-action="Index" style="text-decoration:none">الرئيسية</a></li>
+                            <li><a asp-controller="Rooms" asp-action="Index" style="text-decoration:none">الغرف</a></li>
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <li><a asp-controller="Booking" asp-action="MyBookings">حجوزاتي</a></li>
+                                <li><a asp-controller="Booking" asp-action="MyBookings" style="text-decoration:none">حجوزاتي</a></li>
                             }
                         </ul>
                     </div>

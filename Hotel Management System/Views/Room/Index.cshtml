@@ -8,7 +8,7 @@
 <div class="admin-index-root">
 <div class="admin-header">
     <h2 class="admin-title">إدارة الغرف</h2>
-    <a asp-action="Create" class="admin-create-btn">
+        <a asp-action="Create" class="admin-create-btn" style="text-decoration:none">
         <i class="fas fa-plus"></i> إضافة غرفة جديدة
     </a>
 </div>
@@ -42,7 +42,7 @@
                         </span>
                     </td>
                       <td class="admin-action-group">
-                          <a asp-action="Edit" asp-route-id="@item.Id" class="admin-action-btn admin-edit">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="admin-action-btn admin-edit" style="text-decoration:none">
                                 تعديل
                           </a>
                         <form asp-action="Delete" asp-route-id="@item.Id" method="post"

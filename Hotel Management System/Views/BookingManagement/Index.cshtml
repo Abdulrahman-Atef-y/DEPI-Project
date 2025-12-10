@@ -41,7 +41,7 @@
 							)</span>
                     </td>
                             <td class="admin-action-group">
-                                <a asp-action="ChangeStatus" asp-route-id="@item.Id" asp-route-status="Confirmed" class="admin-action-btn admin-edit">تأكيد</a>
+                            <a asp-action="ChangeStatus" asp-route-id="@item.Id" asp-route-status="Confirmed" class="admin-action-btn admin-edit" style="text-decoration:none">تأكيد</a>
                         <form asp-action="Cancel" asp-route-id="@item.Id" method="post"
                               onsubmit="return confirm('هل أنت متأكد من إلغاء هذا الحجز؟');"
                                       style="display:inline;">

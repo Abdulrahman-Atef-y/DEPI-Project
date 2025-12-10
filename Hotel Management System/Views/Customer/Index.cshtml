@@ -8,7 +8,7 @@
 <div class="admin-index-root">
 <div class="admin-header">
         <h2><i class="admin-title"></i> إدارة العملاء</h2>
-        <a asp-action="Create" class="admin-create-btn">
+        <a asp-action="Create" class="admin-create-btn" style="text-decoration:none">
     <i class="fas fa-user-plus"></i> إضافة عميل
 </a>
 </div>
@@ -44,7 +44,7 @@
                     <td>@item.Role</td>
                     <td>@item.CreatedAt.ToShortDateString()</td>
                             <td class="admin-action-group">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="admin-action-btn admin-edit">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="admin-action-btn admin-edit" style="text-decoration:none">
                             <i class="fas fa-edit"></i> تعديل
                         </a>
                       <form asp-action="Delete" asp-route-id="@item.Id" method="post"
